@@ -19,10 +19,11 @@ namespace AHP
             this.pesos = pesos;
         }
 
-        private void resolver()
+        public void resolver()
         {
             int columnas = matriz.GetLength(1); // Obtener el número de columnas
             int filas = matriz.GetLength(0); // Obtener el número de filas
+            this.matrizNormalizada = new float[filas, columnas];
             float[] sumaColumnas = new float[columnas]; // Array para almacenar la suma de cada columna
             resultado = new float[filas];
             // Iterar sobre cada columna
@@ -45,7 +46,7 @@ namespace AHP
             {
                 for (int j = 0; j < columnas; j++)
                 {
-                    matrizNormalizada[i, j] = matriz[i, j] / sumaColumnas[j];
+                    matrizNormalizada[i, j] = (matriz[i, j] / sumaColumnas[j]);
                 }
             }
             //Agregacion
