@@ -164,7 +164,7 @@ public partial class Ahp : ContentPage
             }
             List<bool> b = new List<bool>(criteriosG);
             List<float> a = new List<float>(tablasGlobal[0].promedioFilas);
-            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a ,b);
+            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a ,b, true);
             pl.resolver();
             DisplayAlert("Hola", "Hola", "Cancelar");
         }

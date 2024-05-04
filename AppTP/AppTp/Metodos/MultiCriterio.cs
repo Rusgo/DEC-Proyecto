@@ -16,11 +16,12 @@ namespace AppTp.Metodos
         //verdadero es suma
         public bool metodo { get; set; }
         public List<bool> max { get; set; }
-        public MultiCriterio(float[,] matriz, List<float> pesos, List<bool> max)
+        public MultiCriterio(float[,] matriz, List<float> pesos, List<bool> max, bool metodo)
         {
             this.matriz = matriz;
             this.pesos = pesos;
             this.max = max;
+            this.metodo = metodo;
         }
         public void resolver()
         {
@@ -47,7 +48,8 @@ namespace AppTp.Metodos
                 // Sumar los elementos de la columna actual
                 for (int i = 0; i < matriz.GetLength(0); i++)
                 {
-                    suma += verificar((this.metodo) ? matriz[i, j] : (float)Math.Pow(matriz[i, j], 2), max[j]);
+                    float res = verificar((this.metodo) ? matriz[i, j] : (float)Math.Pow(matriz[i, j], 2), max[j]);
+                    suma += res;
                 }
 
                 // Almacenar la suma en el array

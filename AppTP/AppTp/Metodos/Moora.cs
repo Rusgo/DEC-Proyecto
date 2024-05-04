@@ -8,7 +8,7 @@ namespace AppTp.Metodos
 {
     public class Moora:MultiCriterio
     {
-        public Moora(float[,] matriz, List<float> pesos, List<bool> max) : base(matriz, pesos, max)
+        public Moora(float[,] matriz, List<float> pesos, List<bool> max,bool metodo) : base(matriz, pesos, max, metodo)
         {
         }
 

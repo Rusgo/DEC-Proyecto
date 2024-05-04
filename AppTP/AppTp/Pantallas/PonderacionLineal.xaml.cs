@@ -20,9 +20,9 @@ namespace AppTp.Pantallas;
             max = maxmin;
             publicopeso = pesos;
             publicopeso.Add(float.Parse(criterios.ToString()));
-            alternativa peso = new alternativa();
+            
             dg.ItemsSource = alternativas;
-            alternativas.Add(peso);
+            
             if (criterios < 7)
             {
                 dg.Columns["C7"].IsVisible = false;
@@ -64,20 +64,33 @@ namespace AppTp.Pantallas;
 
         private void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-        float[,] matriz = new float[alternativas.Count - 1, criterios];
+        float[,] matriz = new float[alternativas.Count, criterios];
         int cont = 0;
+        int aux = -1;
             foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
             {
-                matriz[cont, 0] = float.Parse(alternativa.C1);
-                matriz[cont, 1] = float.Parse(alternativa.C2);
-                matriz[cont, 2] = float.Parse(alternativa.C3);
-                matriz[cont, 3] = float.Parse(alternativa.C4);
-                matriz[cont, 4] = float.Parse(alternativa.C5);
-                matriz[cont, 5] = float.Parse(alternativa.C6);
-                matriz[cont, 6] = float.Parse(alternativa.C7);
+                aux = 0;
+                matriz[cont, aux] = float.Parse(alternativa.C1);
+                aux++;
+                matriz[cont, aux] = float.Parse(alternativa.C2);
+                aux++;
+                if(aux< criterios)
+                matriz[cont, aux] = float.Parse(alternativa.C3);
+                aux++;
+                if (aux < criterios)
+                matriz[cont, aux] = float.Parse(alternativa.C4);
+                aux++;
+                if (aux < criterios)
+                matriz[cont, aux] = float.Parse(alternativa.C5);
+                aux++;
+                if (aux < criterios)
+                matriz[cont, aux] = float.Parse(alternativa.C6);
+                aux++;
+                if (aux < criterios)
+                matriz[cont, aux] = float.Parse(alternativa.C7);
                 cont++;
             }
-            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, max);
+            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, max, true);
             pl.metodo = true;
             pl.resolver();
             dg.RefreshData();

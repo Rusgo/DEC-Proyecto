@@ -8,40 +8,40 @@ namespace AppTp.Metodos
 {
     public class MooraPuntoRef : MultiCriterio
     {
-        public MooraPuntoRef(float[,] matriz, List<float> pesos, List<bool> max) : base(matriz, pesos, max)
+        public MooraPuntoRef(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max,false)
         {
         }
 
-        float[,] MatrizPR { get; set; }
-        float distancia { get; set; }
-        
-        
-        
+        public float[,] MatrizPR { get; set; }
+        public float distancia { get; set; }
+        public float[] rj { get; set; }
+
+
+
 
         public override void agregacion(int filas, int columnas)
         {
-            List<float> rj = new List<float>();
-            
+            this.rj = new float[columnas];
+            this.MatrizPR = new float[filas, columnas];
 
             for (int j = 0; j < columnas; j++)
             {
-                float mejor = 0;
+                rj[j] = matrizPonderada[0, j];
+            }
+            for (int j = 0; j < columnas; j++)
+            {
                 for (int i = 0; i < filas; i++)
                 {
-                    if (max[j] && matrizPonderada[i, j] > mejor)
+                    if (matrizPonderada[i, j] < rj[j] && !max[j])
                     {
-                        mejor = matrizPonderada[i, j];
+                       rj[j] = matrizPonderada[i, j];
                     }
-                    else if (!max[j] && mejor == 0)
+                    if (matrizPonderada[i, j] > rj[j] && max[j])
                     {
-                        mejor = matrizPonderada[i, j];
+                        rj[j] = matrizPonderada[i, j];
                     }
-                    else if (!max[j] && mejor != 0 && matrizPonderada[i, j] < mejor)
-                    {
-                        mejor = matrizPonderada[i, j];
-                    }
+
                 }
-                rj.Add(mejor);
             }
             
             for (int i = 0; i < filas; i++)
@@ -50,11 +50,11 @@ namespace AppTp.Metodos
                 {
                     if (max[j])
                     {
-                        float distancia = rj[j] - matrizPonderada[i, j];
+                        distancia = rj[j] - matrizPonderada[i, j];
                     }
                     else
                     {
-                        float distancia = matrizPonderada[i, j] - rj[j];
+                        distancia = matrizPonderada[i, j] - rj[j];
                     }
                     MatrizPR[i, j] = distancia;
                 }
@@ -65,9 +65,9 @@ namespace AppTp.Metodos
                 float max = 0;
                 for (int j = 0; j < columnas; j++)
                 {
-                    if (matrizPonderada[i, j] > max)
+                    if (MatrizPR[i, j] > max)
                     {
-                        max = matrizPonderada[i, j];
+                        max = MatrizPR[i, j];
                     }
                 }
                 resultado[i] = max;

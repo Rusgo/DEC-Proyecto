@@ -8,7 +8,7 @@ namespace AppTp.Metodos
 {
     public class Topsis:MultiCriterio
     {
-        public Topsis(float[,] matriz, List<float> pesos, List<bool> max) : base(matriz, pesos, max)
+        public Topsis(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
         {
         }
 
