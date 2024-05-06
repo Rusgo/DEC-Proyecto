@@ -11,6 +11,6 @@ public partial class AhpDecision : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-		Navigation.PushAsync(new Ahp(new List<AHP>(),int.Parse(criterios.Text),int.Parse(alternativas.Text),0));
+		Navigation.PushAsync(new Ahp(new List<AHP>(),int.Parse(criterios.Text),int.Parse(alternativas.Text),0, new List<bool>()));
     }
 }

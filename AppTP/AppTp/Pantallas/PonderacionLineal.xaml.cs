@@ -93,6 +93,7 @@ namespace AppTp.Pantallas;
             Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, max, true);
             pl.metodo = true;
             pl.resolver();
+            Navigation.PushAsync(new Resultados(pl));
             dg.RefreshData();
         }
     }

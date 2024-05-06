@@ -70,7 +70,7 @@ public partial class Moora : ContentPage
         }
         Metodos.Moora moora = new Metodos.Moora(matriz, pesos, max, false);
         moora.resolver();
-
+        Navigation.PushAsync(new Resultados(moora));
         dg.RefreshData();
 
     }

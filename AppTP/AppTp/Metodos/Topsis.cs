@@ -20,8 +20,8 @@ namespace AppTp.Metodos
         public float[,] matrizTopsisMenos { get; set; }
         public override void agregacion(int filas, int columnas)
         {
-            float[] AMas = new float[columnas];
-            float[] AMenos = new float[columnas];
+            this.AMas = new float[columnas];
+            this.AMenos = new float[columnas];
 
             // Inicializar los mínimos y máximos con el primer elemento de cada columna
             for (int j = 0; j < columnas; j++)
@@ -33,20 +33,20 @@ namespace AppTp.Metodos
             {
                 for (int j = 0; j < columnas; j++)
                 {
-                    if (matriz[i, j] < AMenos[j] && !max[j])
+                    if (matrizPonderada[i, j] < AMenos[j] && max[j])
                     {
                         AMenos[j] = matrizPonderada[i, j];
                     }
-                    else if(matriz[i, j] > AMenos[j])
+                    else if(matrizPonderada[i, j] > AMenos[j] && !max[j])
                     {
                         AMenos[j] = matrizPonderada[i, j];
                     }
 
-                    if (matriz[i, j] > AMas[j] && max[j])
+                    if (matrizPonderada[i, j] > AMas[j] && max[j])
                     {
                         AMas[j] = matrizPonderada[i, j];
                     }
-                    else if (matriz[i, j] < AMas[j])
+                    else if (matrizPonderada[i, j] < AMas[j] && !max[j])
                     {
                         AMas[j] = matrizPonderada[i, j];
                     }
@@ -58,7 +58,7 @@ namespace AppTp.Metodos
             matrizTopsisMenos = new float[filas, columnas];
             for (int j = 0; j < columnas; j++)
             {
-                for (int i = 0; i < matriz.GetLength(0); i++)
+                for (int i = 0; i < filas; i++)
                 {
                     //restamos al ideal el valor del elemento ij
                     matrizTopsisMas[i,j] = AMas[j] - matrizPonderada[i,j];
@@ -74,7 +74,7 @@ namespace AppTp.Metodos
                 for (int i = 0; i < matriz.GetLength(0); i++)
                 {
                     //restamos al ideal  elementasdassdasdaasd ya sabes el valor del elemento ij
-                    matrizTopsisMas[i, j] = matrizPonderada[i, j] - AMenos[j];
+                    matrizTopsisMenos[i, j] = matrizPonderada[i, j] - AMenos[j];
                 }
 
 

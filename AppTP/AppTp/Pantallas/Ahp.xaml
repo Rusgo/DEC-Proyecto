@@ -4,9 +4,7 @@
              x:Class="AppTp.Pantallas.Ahp">
     <ScrollView>
 
-        <Button Text="Ejecutar" Clicked="Button_Clicked">
-
-        </Button>
+       
     </ScrollView>
 
 </ContentPage>

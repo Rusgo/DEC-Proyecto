@@ -70,6 +70,7 @@ public partial class MooraPuntoRef : ContentPage
         }
         Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, max, false);
         moora.resolver();
+        Navigation.PushAsync(new Resultados(moora));
         dg.RefreshData();
 
     }

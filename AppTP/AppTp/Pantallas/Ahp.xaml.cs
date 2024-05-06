@@ -7,11 +7,13 @@ public partial class Ahp : ContentPage
     int criteriosG;
     int alternativasG;
     int numeroDeTablaG;
+    List<bool> max;
     List<RadioButton> fila = new List<RadioButton>();
     List<List<RadioButton>> matriz = new List<List<RadioButton>>();
     List<AHP> tablasGlobal = new List<AHP>();
-    public Ahp(List<AHP> tablas, int criterios, int alternativas, int numeroDeTabla)
+    public Ahp(List<AHP> tablas, int criterios, int alternativas, int numeroDeTabla, List<bool> max)
     {
+        this.max = max;
         this.tablasGlobal = tablas;
         InitializeComponent();
         if (numeroDeTabla == 0)
@@ -40,11 +42,11 @@ public partial class Ahp : ContentPage
 
         // Crear un Grid
         Grid grid = new Grid();
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 1
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.20, GridUnitType.Star) }); // Columna 2
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.20, GridUnitType.Star) }); // Columna 3
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.05, GridUnitType.Star) }); // Columna 1
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 2
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 3
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 4
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.50, GridUnitType.Star) }); // Columna 5
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.65, GridUnitType.Star) }); // Columna 5
         int aux = 1;
         int cont = 2;
         string c1 = "";
@@ -61,8 +63,8 @@ public partial class Ahp : ContentPage
             {
                 if (cont <= criterios)
                 {
-                    c1 = "Criterio-" + aux;
-                    c2 = "Criterio-" + cont;
+                    c1 = "Cr-" + aux;
+                    c2 = "Cr-" + cont;
                     cont = cont + 1;
 
                 }
@@ -70,8 +72,8 @@ public partial class Ahp : ContentPage
                 {
                     aux = aux + 1;
                     cont = aux + 1;
-                    c1 = "Criterio-" + aux;
-                    c2 = "Criterio-" + cont;
+                    c1 = "Cr-" + aux;
+                    c2 = "Cr-" + cont;
                     cont++;
                 }
             }
@@ -79,8 +81,8 @@ public partial class Ahp : ContentPage
             {
                 if (cont <= alternativas)
                 {
-                    c1 = "Criterio-" + aux;
-                    c2 = "Criterio-" + cont;
+                    c1 = "Cr-" + aux;
+                    c2 = "Cr-" + cont;
                     cont = cont + 1;
 
                 }
@@ -88,8 +90,8 @@ public partial class Ahp : ContentPage
                 {
                     aux = aux + 1;
                     cont = aux + 1;
-                    c1 = "Criterio-" + aux;
-                    c2 = "Criterio-" + cont;
+                    c1 = "Cr-" + aux;
+                    c2 = "Cr-" + cont;
                     cont++;
                 }
             }
@@ -103,7 +105,7 @@ public partial class Ahp : ContentPage
             grid.Add(fila[0], 1, i + 1); // Columna 2
             grid.Add(fila[1], 2, i + 1); // Columna 3
             grid.Add(fila[2], 3, i + 1); // Columna 4
-            grid.Add(new Frame { Content = CreateFrameContent(i, fila), HasShadow = false, BorderColor = Color.FromRgb(0, 0, 0) }, 4, i + 1); // Columna 5
+            grid.Add(new Frame { Content = CreateFrameContent(i, fila), BackgroundColor = Colors.Transparent}, 4, i + 1); // Columna 5
         }
 
         // Agregar el Grid a tu página
@@ -137,18 +139,17 @@ public partial class Ahp : ContentPage
             if (ahp.comprobador())
             {
 
-                Navigation.PushAsync(new Ahp(tablasGlobal, criteriosG, alternativasG, numeroDeTablaG));
+                Navigation.PushAsync(new Ahp(tablasGlobal, criteriosG, alternativasG, numeroDeTablaG, max));
             }
             else
             {
-                DisplayAlert("Hola", "nononoonononononon", "Cancelar");
+                DisplayAlert("Error", "Las decisiones no tienen concistencia", "OK");
 
             }
 
         }
         else
         {
-            DisplayAlert("Hola", "Hola", "Cancelar");
             float[,] matriz = new float[alternativasG, criteriosG];
             int fila = 0;
             for (int i = 0; i < criteriosG; i++)
@@ -162,12 +163,12 @@ public partial class Ahp : ContentPage
                 }
 
             }
-            List<bool> b = new List<bool>(criteriosG);
             List<float> a = new List<float>(tablasGlobal[0].promedioFilas);
-            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a ,b, true);
+            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a , max, true);
             pl.resolver();
-            DisplayAlert("Hola", "Hola", "Cancelar");
+            Navigation.PushAsync(new Resultados(pl));
         }
+        
     }
 
     View CreateFrameContent(int numero, List<RadioButton> fila)
@@ -193,105 +194,7 @@ public partial class Ahp : ContentPage
 
     }
 
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-        //esto se puede automatizar a medida que creamos filas y columnas desde el codigo
-
-        //List<RadioButton> fila2 = new List<RadioButton> { c3, c4, Igual1, Peso10, Peso11, Peso12, Peso13, Peso14, Peso15, Peso16, Peso17 };
-        //List<RadioButton> fila3 = new List<RadioButton> { c5, c6, Igual2, Peso18, Peso19, Peso20, Peso21, Peso22, Peso23, Peso24, Peso25 };
-        int filas = 2;
-        int columnas = 2;
-        float[,] tablaresultado = new float[filas, columnas]; ;
-
-        //No es el numero de comparaciones, es el tamaño de la matriz
-        int contador = 0;
-        int contador2 = 0;
-        int seleccionado = 0;
-        int comparaciones = 2;
-        int auxiliar = 0;
-        foreach (List<RadioButton> lista in matriz)
-        {
-            if (contador < comparaciones - 1)
-            {
-                auxiliar = 0;
-                foreach (RadioButton rb in lista)
-                {
-                    if (rb.IsChecked && auxiliar == 0)
-                    {
-                        seleccionado = 1;
-                    }
-                    if (rb.IsChecked && auxiliar == 1)
-                    {
-                        seleccionado = 2;
-                    }
-                    if (rb.IsChecked && auxiliar != 0 && auxiliar != 1 && seleccionado == 1)
-                    {
-                        tablaresultado[contador2, contador + 1] = float.Parse(rb.Content.ToString());
-                    }
-                    else if (rb.IsChecked && auxiliar != 0 && auxiliar != 1 && seleccionado == 2)
-                    {
-                        tablaresultado[contador2, contador + 1] = 1 / float.Parse(rb.Content.ToString());
-                    }
-                    auxiliar++;
-
-                }
-                contador++;
-
-            }
-            else
-            {
-                auxiliar = 0;
-                contador--;
-                contador2++;
-                foreach (RadioButton rb in lista)
-                {
-                    if (rb.IsChecked && auxiliar == 0)
-                    {
-                        seleccionado = 1;
-                    }
-                    if (rb.IsChecked && auxiliar == 1)
-                    {
-                        seleccionado = 2;
-                    }
-                    if (rb.IsChecked && auxiliar != 0 && auxiliar != 1 && seleccionado == 1)
-                    {
-                        tablaresultado[contador2, contador + 1] = float.Parse(rb.Content.ToString());
-                    }
-                    else if (rb.IsChecked && auxiliar != 0 && auxiliar != 1 && seleccionado == 2)
-                    {
-                        tablaresultado[contador2, contador + 1] = 1 / float.Parse(rb.Content.ToString());
-                    }
-                    auxiliar++;
-
-                }
-            }
-
-        }
-        contador = 0;
-        // Agregar filas al DataTable y asignar valores
-        for (int i = 0; i < filas; i++)
-        {
-            for (int j = 0; j < columnas; j++)
-            {
-                //Se hacen n(n-1)/2 comparaciones (3*2)/2 se hacen 3 comparaciones
-
-                if (j == i)
-                {
-                    tablaresultado[i, j] = 1;
-                    break;
-                }
-            }
-            if (i != 0)
-            {
-                for (int k = i - 1; k >= 0; k--)
-                {
-                    tablaresultado[i, k] = 1 / tablaresultado[k, i];
-                }
-            }
-
-        }
-        DisplayAlert("Hola", "Hola", "Cancelar");
-    }
+    
 
 
 }

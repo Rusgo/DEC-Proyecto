@@ -1,4 +1,6 @@
 namespace AppTp.Pantallas;
+
+using AppTp.Metodos;
 using System.Collections.ObjectModel;
 using static AppTp.Entidades.Alternativa;
 
@@ -107,6 +109,11 @@ public partial class Menu : ContentPage
         if (metodo.SelectedItem.ToString() == "TOPSIS")
         {
             Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+        }
+        if(metodo.SelectedItem.ToString() == "AHP")
+        {
+            List<AHP> tablasGlobal = new List<AHP>();
+            Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()),int.Parse(numeroalter.Text),0 , maxmin));
         }
 
     }
