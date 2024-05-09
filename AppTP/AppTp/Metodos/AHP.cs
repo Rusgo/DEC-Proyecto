@@ -144,17 +144,6 @@ namespace AppTp.Metodos
             {
                 return true;
             }
-
-
-
-
-
-
-
-
-
-
-
         }
 
 

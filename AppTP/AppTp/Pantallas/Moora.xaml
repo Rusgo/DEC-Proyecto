@@ -31,4 +31,5 @@ MinWidth="140" VerticalContentAlignment="Center"/>
 MinWidth="140" VerticalContentAlignment="Center"/>
         </dxg:DataGridView.Columns>
     </dxg:DataGridView>
+
 </ContentPage>

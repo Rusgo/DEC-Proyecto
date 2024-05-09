@@ -1,4 +1,5 @@
 ﻿using AppTp.Metodos;
+using CommunityToolkit.Maui.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace AppTp.Metodos
         public void resolver()
         {
             int columnas = matriz.GetLength(1);
-            int filas = matriz.GetLength(0); 
+            int filas = matriz.GetLength(0);
             this.matrizNormalizada = new float[filas, columnas];
             this.matrizPonderada = new float[filas, columnas];
             resultado = new float[filas];
@@ -39,7 +40,7 @@ namespace AppTp.Metodos
         }
         public virtual void normalizar(int filas, int columnas)
         {
-            float[] sumaColumnas = new float[columnas]; 
+            float[] sumaColumnas = new float[columnas];
             // Iterar sobre cada columna
             for (int j = 0; j < columnas; j++)
             {
@@ -94,6 +95,46 @@ namespace AppTp.Metodos
                 resultado[i] = acu;
                 acu = 0;
             }
+        }
+        public virtual async void guardarExcel()
+        {
+            string fileNameExport = "";
+            List<string> lista = new List<string>
+            {
+                "Paso1",
+                "Paso2",
+                "Paso3",
+                "Paso4"
+            };
+            float[,] res = new float[1, this.resultado.Count()];
+            int cont = 0;
+            foreach (float f in resultado)
+            {
+                res[0, cont] = f;
+                cont++;
+            }
+            List<float[,]> matrices = new List<float[,]>
+            {
+                this.matriz,
+                this.matrizNormalizada,
+                this.matrizPonderada,
+                res
+            };
+            Entidades.ExcelExporter e = new Entidades.ExcelExporter();
+
+            var folder = await FolderPicker.PickAsync(default);
+            while (folder == null)
+            {
+                folder = await FolderPicker.PickAsync(default);
+            }
+
+            if(folder != null)
+            {
+                var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
+                e.ExportToExcel(lista, matrices, FilePath);
+            }
+
+                
         }
     }
 }
