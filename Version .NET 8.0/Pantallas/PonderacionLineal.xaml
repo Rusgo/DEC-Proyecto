@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:dxg="clr-namespace:DevExpress.Maui.DataGrid;assembly=DevExpress.Maui.DataGrid"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppTp.Pantallas.PonderacionLineal">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Resolver" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
+
+    <dxg:DataGridView x:Name="dg" ItemsSource="{Binding alternativas}"
+      EditorShowMode="DoubleTap"  IsPullToRefreshEnabled="True" PullToRefresh="dg_PullToRefresh">
+                <dxg:DataGridView.Columns>
+                    <dxg:TextColumn FieldName="Name" 
+            MinWidth="130" VerticalContentAlignment="Center" />
+                    <dxg:TextColumn FieldName="C1" 
+            MinWidth="150" VerticalContentAlignment="Center" />
+            <dxg:TextColumn FieldName="C2" 
+            MinWidth="120" DisplayFormat="d" VerticalContentAlignment="Center"/>
+                    <dxg:TextColumn x:Name="col3" FieldName="C3"
+                MinWidth="140" VerticalContentAlignment="Center"/>
+            <dxg:TextColumn x:Name="col4" FieldName="C4" 
+MinWidth="140" VerticalContentAlignment="Center"/>
+            <dxg:TextColumn x:Name="col5" FieldName="C5"
+MinWidth="140" VerticalContentAlignment="Center"/>
+            <dxg:TextColumn x:Name="col6" FieldName="C6"
+MinWidth="140" VerticalContentAlignment="Center"/>
+            <dxg:TextColumn x:Name="col7" FieldName="C7"
+MinWidth="140" VerticalContentAlignment="Center"/>
+            <dxg:TextColumn x:Name="col8" FieldName="U"
+MinWidth="140" VerticalContentAlignment="Center"/>
+        </dxg:DataGridView.Columns>
+            </dxg:DataGridView>
+
+</ContentPage>
