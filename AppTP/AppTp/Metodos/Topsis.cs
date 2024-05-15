@@ -102,43 +102,7 @@ namespace AppTp.Metodos
             }
         }
 
-        public override async void guardarExcel()
-        {
-            string fileNameExport = "";
-            List<string> lista = new List<string>
-            {
-                "Paso1",
-                "Paso2",
-                "Paso3",
-                "Paso4",
-            };
-            float[,] res = new float[1, this.resultado.Count()];
-            int cont = 0;
-            foreach (float f in resultado)
-            {
-                res[0, cont] = f;
-                cont++;
-            }
-            List<float[,]> matrices = new List<float[,]>
-            {
-                this.matriz,
-                this.matrizNormalizada,
-                this.matrizPonderada,
-                res
-            };
-            Entidades.ExcelExporter e = new Entidades.ExcelExporter();
-
-            var folder = await FolderPicker.PickAsync(default);
-            while (folder == null)
-            {
-                folder = await FolderPicker.PickAsync(default);
-            }
-
-            if (folder != null)
-            {
-                var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
-                e.ExportToExcel(lista, matrices, FilePath);
-            }
-        }
+        
+           
     }
 }
