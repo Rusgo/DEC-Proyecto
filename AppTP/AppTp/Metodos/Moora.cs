@@ -59,36 +59,8 @@ namespace AppTp.Metodos
 
             };
 
-            List<string> listaLetras = new List<string>
-            {
-                "Raiz de Cuadrados",
-                "Pesos"
-            };
-            if (this.metodo)
-            {
-                listaLetras = new List<string>
-            {
-                "Suma",
-                "Pesos"
-            };
-            }
 
-            float[] peso = new float[this.pesos.Count()];
-            cont = 0;
-            foreach (float f in resultado)
-            {
-                peso[cont] = f;
-                cont++;
-            }
-            List<float[]> matrizSumyPeso = new List<float[]>
-            {
-                this.sumaFinal,
-                peso
-
-            };
-
-
-            return Agregarfila(AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul), matrizSumyPeso, listaLetras);
+            return AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul);
         }
         public override async void guardarExcel()
         {

@@ -94,26 +94,33 @@ public partial class Menu : ContentPage
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
         List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
 
-        if (metodo.SelectedItem.ToString() == "Ponderaciòn Lineal")
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
         {
-            Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+            Navigation.PushAsync(new Windows.NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()))); 
         }
-        else if (metodo.SelectedItem.ToString() == "MOORA")
+        else
         {
-            Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-        }
-        if (metodo.SelectedItem.ToString() == "MOORA con referencia")
-        {
-            Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-        }
-        if (metodo.SelectedItem.ToString() == "TOPSIS")
-        {
-            Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-        }
-        if(metodo.SelectedItem.ToString() == "AHP")
-        {
-            List<AHP> tablasGlobal = new List<AHP>();
-            Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()),int.Parse(numeroalter.Text),0 , maxmin));
+            if (metodo.SelectedItem.ToString() == "Ponderaciòn Lineal")
+            {
+                Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+            }
+            else if (metodo.SelectedItem.ToString() == "MOORA")
+            {
+                Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+            }
+            if (metodo.SelectedItem.ToString() == "MOORA con referencia")
+            {
+                Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+            }
+            if (metodo.SelectedItem.ToString() == "TOPSIS")
+            {
+                Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+            }
+            if (metodo.SelectedItem.ToString() == "AHP")
+            {
+                List<AHP> tablasGlobal = new List<AHP>();
+                Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()), int.Parse(numeroalter.Text), 0, maxmin));
+            }
         }
 
     }

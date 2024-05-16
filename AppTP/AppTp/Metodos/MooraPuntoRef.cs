@@ -85,7 +85,7 @@ namespace AppTp.Metodos
         {
             List<string> Lresul = new List<string>
             {
-                "S(Xi)"
+                "Distancia"
             };
             float[] res = new float[this.resultado.Count()];
             int cont = 0;
