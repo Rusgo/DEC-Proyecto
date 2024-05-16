@@ -100,7 +100,7 @@ namespace AppTp.Metodos
             }
         }
         //Agrega A1A2A3
-        public string[,] formatoExcel(float[,] matriz)
+        public virtual string[,] formatoExcel(float[,] matriz)
         {
             int filasTotales = matriz.GetLength(0);
             int columnasTotales = matriz.GetLength(1);
@@ -155,7 +155,7 @@ namespace AppTp.Metodos
             return matrizFormatoExcel;
         }
         //AGREGAR FILA A MATRIZ
-        public string[,] Agregarfila(string[,] matriz, List<float[]> agregados, List<string> letras)
+        public virtual string[,] Agregarfila(string[,] matriz, List<float[]> agregados, List<string> letras)
         {
             int filasTotales = agregados.Count;
 
@@ -187,7 +187,7 @@ namespace AppTp.Metodos
             return matrizFormatoExcel;
         }
         //AGREGAR columna A MATRIZ
-        public string[,] AgregarColumna(string[,] matriz, List<float[]> agregados, List<string> letras)
+        public virtual string[,] AgregarColumna(string[,] matriz, List<float[]> agregados, List<string> letras)
         {
             int filasTotales = agregados.Count;
 

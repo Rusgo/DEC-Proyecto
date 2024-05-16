@@ -1,5 +1,6 @@
 ﻿using AppTp.Metodos;
 using CommunityToolkit.Maui.Storage;
+using DocumentFormat.OpenXml.Office2013.Drawing.Chart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,12 @@ namespace AppTp.Metodos
 {
     public class MultiCriterio
     {
-        public float[,] matrizOriginal {  get; set; }
         public float[,] matriz { get; set; }
         public float[,] matrizNormalizada { get; set; }
         public float[,] matrizPonderada { get; set; }
         public List<float> pesos { get; set; }
         public float[] resultado { get; set; }
-        public float[] sumaFinal {  get; set; }
+        public float[] sumaFinal { get; set; }
         //verdadero es suma
         public bool metodo { get; set; }
         public List<bool> max { get; set; }
@@ -58,7 +58,8 @@ namespace AppTp.Metodos
                 // Almacenar la suma en el array
                 sumaColumnas[j] = (this.metodo) ? suma : (float)Math.Sqrt(suma);
             }
-            sumaFinal = sumaColumnas;
+            this.sumaFinal = sumaColumnas;
+
             //normalizar
             for (int i = 0; i < filas; i++)
             {
@@ -98,89 +99,302 @@ namespace AppTp.Metodos
                 acu = 0;
             }
         }
-        public virtual float[,] matrizAgrandador(float[,] originalMatriz, List<float[]> rowsToAdd, List<float[]> columnsToAdd) //con este vamos a hacer que las matrices tengan 3 elementos de mas abajo y a la derecha
+        //Agrega A1A2A3
+        public string[,] formatoExcel(float[,] matriz)
         {
-            int originalRows = originalMatriz.GetLength(0);
-            int originalCols = originalMatriz.GetLength(1);
+            int filasTotales = matriz.GetLength(0);
+            int columnasTotales = matriz.GetLength(1);
 
-            int newRows = originalRows + 3;
-
-            float[,] newMatrix = new float[newRows, originalCols + 3];
-
-            // Copiar los elementos de la matriz original a la nueva matriz
-            for (int i = 0; i < originalRows; i++)
+            string[,] matrizString = new string[matriz.GetLength(0), matriz.GetLength(1)];
+            int filaAgregada = 0;
+            int coluAgregada = 0;
+            for (int i = 0; i < filasTotales; i++)
             {
-                for (int j = 0; j < originalCols; j++)
+                for (int j = 0; j < columnasTotales; j++)
                 {
-                    newMatrix[i, j] = originalMatriz[i, j];
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizString[i, j] = matriz[i, j].ToString();
+                    }
+
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
                 }
             }
-            /*
-            // Agregar las nuevas filas
-            int rowIndex = originalRows;
-            foreach (var row in rowsToAdd)
+            filaAgregada = 0;
+            coluAgregada = 0;
+            string[,] matrizFormatoExcel = new string[filasTotales + 1, columnasTotales + 1];
+            for (int i = 0; i < filasTotales + 1; i++)
             {
-                for (int j = 0; j < originalCols; j++)
+                for (int j = 0; j < columnasTotales + 1; j++)
                 {
-                    newMatrix[rowIndex, j] = row[j];
+                    //Agrego col de alter
+                    if (j == 0 && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i + 1, j] = "A" + (filaAgregada + 1).ToString();
+                    }
+                    else if (j > 0 && i > 0 && j <= matriz.GetLength(1) && i <= matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i - 1, j - 1].ToString();
+                    }
+                    //Agrego fila de criterios
+                    if (i == 0 && j < matrizString.GetLength(1))
+                    {
+                        matrizFormatoExcel[i, j + 1] = "C" + (coluAgregada + 1).ToString();
+                        coluAgregada++;
+                    }
                 }
-                rowIndex++;
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
             }
 
-            // Agregar las nuevas columnas
-            int colIndex = originalCols;
-            foreach (var col in columnsToAdd)
-            {
-                for (int i = 0; i < originalRows; i++)
-                {
-                    newMatrix[i, colIndex] = col[i];
-                }
-                colIndex++;
-            }
-            */
-            return newMatrix;
+            return matrizFormatoExcel;
         }
-        public virtual async void guardarExcel()
+        //AGREGAR FILA A MATRIZ
+        public string[,] Agregarfila(string[,] matriz, List<float[]> agregados, List<string> letras)
         {
-            float[] vacio = new float[pesos.Count];
-            float[,] matrizConSuma = matrizAgrandador(matriz, new List<float[]> { sumaFinal,vacio,vacio}, new List<float[]> { vacio, vacio, vacio });
-            float[,] matrizNormalizadaConPesos = matrizAgrandador(matrizNormalizada, new List<float[]> { sumaFinal, vacio, vacio }, new List<float[]> { vacio, vacio, vacio });
-            float[,] matrizAgregacion = matrizAgrandador(matrizPonderada, new List<float[]> { sumaFinal, vacio, vacio }, new List<float[]> { resultado, vacio, vacio });
+            int filasTotales = agregados.Count;
 
-            string fileNameExport = "";
-            List<string> lista = new List<string>
+            string[,] matrizFormatoExcel = new string[matriz.GetLength(0) + filasTotales, matriz.GetLength(1)];
+            int filaAgregada = 0;
+            for (int i = 0; i < matrizFormatoExcel.GetLength(0); i++)
             {
-                "Paso1",
-                "Paso2",
-                "Paso3",
-                "Paso4",
-                "Paso5"
-            };
+                for (int j = 0; j < matrizFormatoExcel.GetLength(1); j++)
+                {
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i, j];
+                    }
+                    if (j == 0 && i >= matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = letras[filaAgregada];
+                    }
+                    else if (i >= matriz.GetLength(0) && j > 0 && agregados[filaAgregada].Count() >= j)
+                    {
+                        matrizFormatoExcel[i, j] = agregados[filaAgregada][j - 1].ToString();
+                    }
 
-            List<string> teoria = new List<string>
+                }
+                if (i >= matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+            return matrizFormatoExcel;
+        }
+        //AGREGAR columna A MATRIZ
+        public string[,] AgregarColumna(string[,] matriz, List<float[]> agregados, List<string> letras)
+        {
+            int filasTotales = agregados.Count;
+
+            string[,] matrizFormatoExcel = new string[matriz.GetLength(0), matriz.GetLength(1) + filasTotales];
+            int filaAgregada = 0;
+            for (int i = 0; i < matrizFormatoExcel.GetLength(0); i++)
             {
-                "Mostramos la matriz orginal cargada en la aplicacion",
-                "Lo primero que debemos hacer es asegurarnos de que todos los criterios esten en maximizar.",
-                "Normalizamos la matriz por el metodo de la suma",
-                "Ponderamos cada uno de los elemento de la matriz normalizada con sus respectivos pesos",
-                "Realizamos la funcion de agregacion"
-            };
+                for (int j = 0; j < matrizFormatoExcel.GetLength(1); j++)
+                {
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i, j];
+                    }
+                    if (j >= matriz.GetLength(1) && i == 0)
+                    {
+                        matrizFormatoExcel[i, j] = letras[i];
+                    }
+                    else if (j >= matriz.GetLength(1) && i > 0)
+                    {
+                        matrizFormatoExcel[i, j] = agregados[filaAgregada][i - 1].ToString();
+                    }
 
-            float[,] res = new float[1, this.resultado.Count()];
+                }
+            }
+            return matrizFormatoExcel;
+        }
+
+        public string[,] sinNormalizarExcel()
+        {
+            List<string> listaLetras = new List<string>
+            {
+                "Raiz de Cuadrados",
+                "Pesos"
+            };
+            if (this.metodo)
+            {
+                listaLetras = new List<string>
+            {
+                "Suma",
+                "Pesos"
+            };
+            }
+            float[] peso = new float[this.pesos.Count()];
             int cont = 0;
             foreach (float f in resultado)
             {
-                res[cont, 0] = f;
+                peso[cont] = f;
                 cont++;
             }
-            
-            List<float[,]> matrices = new List<float[,]>
+            List<float[]> matrizSumyPeso = new List<float[]>
             {
-                this.matrizOriginal,
-                matrizConSuma,
-                matrizNormalizadaConPesos,
-                this.matrizPonderada,
+                this.sumaFinal,
+                peso
+
+            };
+
+
+            return Agregarfila(formatoExcel(this.matriz), matrizSumyPeso, listaLetras);
+        }
+        public string[,] normalizarExcel()
+        {
+            List<string> listaLetras = new List<string>
+            {
+                "Raiz de Cuadrados",
+                "Pesos"
+            };
+            if (this.metodo)
+            {
+                listaLetras = new List<string>
+            {
+                "Suma",
+                "Pesos"
+            };
+            }
+            
+            float[] peso = new float[this.pesos.Count()];
+            int cont = 0;
+            foreach (float f in resultado)
+            {
+                peso[cont] = f;
+                cont++;
+            }
+            List<float[]> matrizSumyPeso = new List<float[]>
+            {
+                this.sumaFinal,
+                peso
+
+            };
+
+
+            return Agregarfila(formatoExcel(this.matrizNormalizada), matrizSumyPeso, listaLetras);
+        }
+        public virtual string[,] ponderarExcel()
+        {
+            List<string> listaLetras = new List<string>
+            {
+                "Raiz de Cuadrados",
+                "Pesos"
+            };
+            if (this.metodo)
+            {
+                listaLetras = new List<string>
+                {
+                    "Suma",
+                    "Pesos"
+                };
+            }
+
+            float[] peso = new float[this.pesos.Count()];
+            int cont = 0;
+            foreach (float f in resultado)
+            {
+                peso[cont] = f;
+                cont++;
+            }
+            List<float[]> matrizSumyPeso = new List<float[]>
+            {
+                this.sumaFinal,
+                peso
+
+            };
+
+
+            return Agregarfila(formatoExcel(this.matrizPonderada), matrizSumyPeso, listaLetras);
+        }
+        
+        public virtual string[,] agregacionExcel()
+        {
+            List<string> Lresul = new List<string>
+            {
+                "U(X)"
+            };
+            float[] res = new float[this.resultado.Count()];
+            int cont = 0;
+            foreach (float f in resultado)
+            {
+                res[cont] = f;
+                cont++;
+            }
+            cont = 0;
+
+            List<float[]> agrega = new List<float[]>
+            {
                 res
+
+            };
+
+            List<string> listaLetras = new List<string>
+            {
+                "Raiz de Cuadrados",
+                "Pesos"
+            };
+            if (this.metodo)
+            {
+                listaLetras = new List<string>
+            {
+                "Suma",
+                "Pesos"
+            };
+            }
+
+            float[] peso = new float[this.pesos.Count()];
+            cont = 0;
+            foreach (float f in resultado)
+            {
+                peso[cont] = f;
+                cont++;
+            }
+            List<float[]> matrizSumyPeso = new List<float[]>
+            {
+                this.sumaFinal,
+                peso
+
+            };
+
+
+            return Agregarfila(AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul), matrizSumyPeso, listaLetras);
+        }
+        public virtual async void guardarExcel()
+        {
+            string fileNameExport = "";
+
+            List<string> lista = new List<string>
+            {
+                "RaizDeSumatoria",
+                "Normalizar",
+                "Ponderar",
+                "Agregacion"
+            };
+            if (this.metodo)
+            {
+                lista = new List<string>
+            {
+                "Sumatoria",
+                "Normalizar",
+                "Ponderar",
+                "Agregacion"
+            };
+            }
+            
+            List<float[]> lista2 = new List<float[]>();
+            List<string[,]> matrices = new List<string[,]>
+            {
+                sinNormalizarExcel(),
+                normalizarExcel(),
+                ponderarExcel(),
+                agregacionExcel()
             };
             Entidades.ExcelExporter e = new Entidades.ExcelExporter();
 
@@ -189,14 +403,20 @@ namespace AppTp.Metodos
             {
                 folder = await FolderPicker.PickAsync(default);
             }
-
-            if(folder != null)
+            List<string> textos = new List<string>
+            {
+                "Aplicamos el metodo seleccionado calculando el valor para cada colu blabla",
+                "Normalizamos dividiendo a cada valor por su respectivo valor de columna bla blka",
+                "Ponderamos la matriz con los pesos",
+                "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
+            };
+            if (folder != null)
             {
                 var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
-                e.ExportToExcel(lista, matrices, FilePath, teoria);
+                e.ExportToExcel(lista, matrices, FilePath,textos);
             }
 
-                
+
         }
     }
 }
