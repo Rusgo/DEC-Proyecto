@@ -95,6 +95,9 @@
 	  <MauiXaml Update="Pantallas\MooraPuntoRef.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pantallas\NewPage1.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\PonderacionLineal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -96,7 +96,7 @@ public partial class Menu : ContentPage
 
         if (DeviceInfo.Platform == DevicePlatform.WinUI)
         {
-            Navigation.PushAsync(new Windows.NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()))); 
+            Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()))); 
         }
         else
         {
