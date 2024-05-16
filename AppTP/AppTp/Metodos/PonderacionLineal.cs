@@ -30,7 +30,7 @@ namespace AppTp.Metodos
                 // Almacenar la suma en el array
                 sumaColumnas[j] = (this.metodo) ? suma : (float)Math.Sqrt(suma);
             }
-
+            this.sumaFinal = sumaColumnas;
             //normalizar
             for (int i = 0; i < filas; i++)
             {
