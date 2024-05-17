@@ -86,7 +86,7 @@ public partial class Menu : ContentPage
 
     }
 
-    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
     {
         ObservableCollection<alternativa> alternativas = new ObservableCollection<alternativa>();
         for (int i = 0; i < int.Parse(numeroalter.Text); i++)
@@ -95,35 +95,78 @@ public partial class Menu : ContentPage
         }
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
         List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
-        if (metodo == "Método AHP")
+        peso = normalizarPesos(peso);
+        bool validacionPesos = verificarSuma(peso);
+        if (validacionPesos)
         {
-            List<AHP> tablasGlobal = new List<AHP>();
-            Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()), int.Parse(numeroalter.Text), 0, maxmin));
-        }
-        else if (DeviceInfo.Platform == DevicePlatform.WinUI)
-        {
-            Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso, metodo)); 
+            if (metodo == "Método AHP")
+            {
+                List<AHP> tablasGlobal = new List<AHP>();
+                Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()), int.Parse(numeroalter.Text), 0, maxmin));
+            }
+            else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            {
+                Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso, metodo));
+            }
+            else
+            {
+                if (metodo == "  Ponderación Lineal")
+                {
+                    Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+                }
+                else if (metodo == "Método MOORA")
+                {
+                    Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+                }
+                if (metodo == "          MOORA Punto de Referencia")
+                {
+                    Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+                }
+                if (metodo == "Método TOPSIS")
+                {
+                    Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
+                }
+
+            }
         }
         else
         {
-            if (metodo == "  Ponderación Lineal")
-            {
-                Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-            }
-            else if (metodo == "Método MOORA")
-            {
-                Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-            }
-            if (metodo == "          MOORA Punto de Referencia")
-            {
-                Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-            }
-            if (metodo == "Método TOPSIS")
-            {
-                Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
-            }
-            
+            await DisplayAlert("Error en el valor de los pesos", "La sumatoria de los pesos debe ser igual a 1 | suma: " + sumarPesos(peso), "OK");
         }
+        
+    
 
+    }
+    private float sumarPesos(List<float> pesos)
+    {
+        float acu = 0;
+        foreach (float peso in pesos)
+        {
+            acu = acu + peso;
+        }
+        return acu;
+    }
+
+    private List<float> normalizarPesos(List<float> pesos)
+    {
+        float sumaPesos = sumarPesos(pesos);
+        if (sumaPesos > 1)
+        {
+            for (int i = 0; i < int.Parse(criterios.SelectedItem.ToString()); i++)
+            {
+                pesos[i] = pesos[i] / sumaPesos;
+            }
+        }
+        return pesos;
+    }
+
+    private bool verificarSuma(List<float> pesos)
+    {
+        float sumaPesos = sumarPesos(pesos);
+        if (sumaPesos < 1)
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -75,6 +75,7 @@ public partial class NewPage2 : ContentPage
     }
     private void OnNextClicked(object sender, EventArgs e)
     {
+        
         float[,] matriz = new float[filas, columnas];
         int i = -1;
         foreach (List<Entry> Lentry in entradas)

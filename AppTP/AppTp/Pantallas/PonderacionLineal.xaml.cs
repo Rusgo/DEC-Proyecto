@@ -62,11 +62,13 @@ namespace AppTp.Pantallas;
 
         }
 
-        private void ToolbarItem_Clicked(object sender, EventArgs e)
+    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    {
+        try
         {
-        float[,] matriz = new float[alternativas.Count, criterios];
-        int cont = 0;
-        int aux = -1;
+            float[,] matriz = new float[alternativas.Count, criterios];
+            int cont = 0;
+            int aux = -1;
             foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
             {
                 aux = 0;
@@ -74,20 +76,20 @@ namespace AppTp.Pantallas;
                 aux++;
                 matriz[cont, aux] = float.Parse(alternativa.C2);
                 aux++;
-                if(aux< criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C3);
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C3);
                 aux++;
                 if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C4);
+                    matriz[cont, aux] = float.Parse(alternativa.C4);
                 aux++;
                 if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C5);
+                    matriz[cont, aux] = float.Parse(alternativa.C5);
                 aux++;
                 if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C6);
+                    matriz[cont, aux] = float.Parse(alternativa.C6);
                 aux++;
                 if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C7);
+                    matriz[cont, aux] = float.Parse(alternativa.C7);
                 cont++;
             }
             Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, max, true);
@@ -96,4 +98,9 @@ namespace AppTp.Pantallas;
             Navigation.PushAsync(new Resultados(pl));
             dg.RefreshData();
         }
+        catch
+        {
+            DisplayAlert("Error en la carga de datos", "Solo se pueden ingresar numeros en la tabla", "OK");
+        }
     }
+}

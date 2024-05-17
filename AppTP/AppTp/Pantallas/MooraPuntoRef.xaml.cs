@@ -42,36 +42,44 @@ public partial class MooraPuntoRef : ContentPage
 
     private void ToolbarItem_Clicked(object sender, EventArgs e)
     {
-        float[,] matriz = new float[alternativas.Count, criterios];
-        int cont = 0;
-        int aux = -1;
-        foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
+        try
         {
-            aux = 0;
-            matriz[cont, aux] = float.Parse(alternativa.C1);
-            aux++;
-            matriz[cont, aux] = float.Parse(alternativa.C2);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C3);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C4);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C5);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C6);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C7);
-            cont++;
+            float[,] matriz = new float[alternativas.Count, criterios];
+            int cont = 0;
+            int aux = -1;
+            foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
+            {
+                aux = 0;
+                matriz[cont, aux] = float.Parse(alternativa.C1);
+                aux++;
+                matriz[cont, aux] = float.Parse(alternativa.C2);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C3);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C4);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C5);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C6);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C7);
+                cont++;
+            }
+            Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, max, false);
+            moora.resolver();
+            Navigation.PushAsync(new Resultados(moora));
+            dg.RefreshData();
         }
-        Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, max, false);
-        moora.resolver();
-        Navigation.PushAsync(new Resultados(moora));
-        dg.RefreshData();
+        catch
+        {
+            DisplayAlert("Error en la carga de datos", "Solo se pueden ingresar numeros en la tabla", "OK");
+        }
+        
 
     }
 

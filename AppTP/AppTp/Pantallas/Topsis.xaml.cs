@@ -42,40 +42,48 @@ public partial class Topsis : ContentPage
         }
     }
 
-    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
     {
-        float[,] matriz = new float[alternativas.Count, criterios];
-        
-        
-        int cont = 0;
-        int aux = -1;
-        foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
+        try
         {
-            aux = 0;
-            matriz[cont, aux] = float.Parse(alternativa.C1);
-            aux++;
-            matriz[cont, aux] = float.Parse(alternativa.C2);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C3);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C4);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C5);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C6);
-            aux++;
-            if (aux < criterios)
-                matriz[cont, aux] = float.Parse(alternativa.C7);
-            cont++;
+            float[,] matriz = new float[alternativas.Count, criterios];
+
+
+            int cont = 0;
+            int aux = -1;
+            foreach (alternativa alternativa in (ObservableCollection<alternativa>)alternativas)
+            {
+                aux = 0;
+                matriz[cont, aux] = float.Parse(alternativa.C1);
+                aux++;
+                matriz[cont, aux] = float.Parse(alternativa.C2);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C3);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C4);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C5);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C6);
+                aux++;
+                if (aux < criterios)
+                    matriz[cont, aux] = float.Parse(alternativa.C7);
+                cont++;
+            }
+            Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, max, false);
+            tp.resolver();
+            dg.RefreshData();
+            Navigation.PushAsync(new Resultados(tp));
         }
-        Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, max, false);
-        tp.resolver();
-        dg.RefreshData();
-        Navigation.PushAsync(new Resultados(tp));
+        catch
+        {
+            await DisplayAlert("Errore en la carga de datos", "Solo se pueden ingresar numeros en la tabla", "OK");
+        }
+        
 
     }
 }
