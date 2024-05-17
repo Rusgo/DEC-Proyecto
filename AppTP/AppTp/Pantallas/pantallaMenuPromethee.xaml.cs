@@ -61,7 +61,7 @@ public partial class pantallaMenuPromethe : ContentPage
         }
 
     }
-    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
     {
         ObservableCollection<alternativa> alternativas = new ObservableCollection<alternativa>();
         for (int i = 0; i < int.Parse(Alternativas.Text); i++)
@@ -70,51 +70,61 @@ public partial class pantallaMenuPromethe : ContentPage
         }
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
         List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
-        List<string> funciones = new List<string>();
-        List<float> p = new List<float>();
-        List<float> q = new List<float>();
-        List<float> o = new List<float>();
-        funciones.Add(p1.SelectedItem.ToString() ?? "1");
-        funciones.Add(p2.SelectedItem.ToString() ?? "1");
-        p.Add(float.Parse(pp1.Text ?? "0"));
-        p.Add(float.Parse(pp2.Text ?? "0"));
-        q.Add(float.Parse(q1.Text ?? "0"));
-        q.Add(float.Parse(q2.Text ?? "0"));
-        o.Add(float.Parse(o1.Text ?? "0"));
-        o.Add(float.Parse(o2.Text ?? "0"));
-        if (int.Parse(criterios.Text) == 3)
+        peso = normalizarPesos(peso);
+        bool validacionPesos = verificarSuma(peso);
+        if (verificarSuma(peso))
         {
-            funciones.Add(p3.SelectedItem.ToString() ?? "1");
-            p.Add(float.Parse(pp3.Text ?? "0"));
-            q.Add(float.Parse(q3.Text ?? "0")); o.Add(float.Parse(o3.Text ?? "0"));
-        }
-        if (int.Parse(criterios.Text) == 4)
-        {
-            funciones.Add(p4.SelectedItem.ToString() ?? "1");
-            p.Add(float.Parse(pp4.Text ?? "0"));
-            q.Add(float.Parse(q4.Text ?? "0")); o.Add(float.Parse(o3.Text ?? "0"));
-        }
-        if (int.Parse(criterios.Text) == 5)
-        {
-            funciones.Add(p5.SelectedItem.ToString() ?? "1");
-            p.Add(float.Parse(pp5.Text ?? "0"));
-            q.Add(float.Parse(q5.Text ?? "0")); o.Add(float.Parse(o5.Text ?? "0"));
-        }
-        if (int.Parse(criterios.Text) == 6)
-        {
-            funciones.Add(p6.SelectedItem.ToString() ?? "1");
-            p.Add(float.Parse(pp6.Text ?? "0"));
-            q.Add(float.Parse(q6.Text ?? "0")); o.Add(float.Parse(o6.Text ?? "0"));
-        }
-        if (int.Parse(criterios.Text) == 7)
-        {
-            funciones.Add(p7.SelectedItem.ToString() ?? "1");
-            p.Add(float.Parse(pp7.Text ?? "0"));
-            q.Add(float.Parse(q7.Text ?? "0")); o.Add(float.Parse(o7.Text ?? "0"));
+            List<string> funciones = new List<string>();
+            List<float> p = new List<float>();
+            List<float> q = new List<float>();
+            List<float> o = new List<float>();
+            funciones.Add(p1.SelectedItem.ToString() ?? "1");
+            funciones.Add(p2.SelectedItem.ToString() ?? "1");
+            p.Add(float.Parse(pp1.Text ?? "0"));
+            p.Add(float.Parse(pp2.Text ?? "0"));
+            q.Add(float.Parse(q1.Text ?? "0"));
+            q.Add(float.Parse(q2.Text ?? "0"));
+            o.Add(float.Parse(o1.Text ?? "0"));
+            o.Add(float.Parse(o2.Text ?? "0"));
+            if (int.Parse(criterios.Text) == 3)
+            {
+                funciones.Add(p3.SelectedItem.ToString() ?? "1");
+                p.Add(float.Parse(pp3.Text ?? "0"));
+                q.Add(float.Parse(q3.Text ?? "0")); o.Add(float.Parse(o3.Text ?? "0"));
+            }
+            if (int.Parse(criterios.Text) == 4)
+            {
+                funciones.Add(p4.SelectedItem.ToString() ?? "1");
+                p.Add(float.Parse(pp4.Text ?? "0"));
+                q.Add(float.Parse(q4.Text ?? "0")); o.Add(float.Parse(o3.Text ?? "0"));
+            }
+            if (int.Parse(criterios.Text) == 5)
+            {
+                funciones.Add(p5.SelectedItem.ToString() ?? "1");
+                p.Add(float.Parse(pp5.Text ?? "0"));
+                q.Add(float.Parse(q5.Text ?? "0")); o.Add(float.Parse(o5.Text ?? "0"));
+            }
+            if (int.Parse(criterios.Text) == 6)
+            {
+                funciones.Add(p6.SelectedItem.ToString() ?? "1");
+                p.Add(float.Parse(pp6.Text ?? "0"));
+                q.Add(float.Parse(q6.Text ?? "0")); o.Add(float.Parse(o6.Text ?? "0"));
+            }
+            if (int.Parse(criterios.Text) == 7)
+            {
+                funciones.Add(p7.SelectedItem.ToString() ?? "1");
+                p.Add(float.Parse(pp7.Text ?? "0"));
+                q.Add(float.Parse(q7.Text ?? "0")); o.Add(float.Parse(o7.Text ?? "0"));
 
-        }
+            }
 
-        Navigation.PushAsync(new NewPage2(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo, funciones,p,q,o));
+            Navigation.PushAsync(new NewPage2(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo, funciones, p, q, o));
+        }
+        else
+        {
+            await DisplayAlert("Error en el valor de los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+        }
+        
         
         
 
@@ -186,5 +196,38 @@ public partial class pantallaMenuPromethe : ContentPage
             }
         }
 
+    }
+
+    private float sumarPesos(List<float> pesos)
+    {
+        float acu = 0;
+        foreach (float peso in pesos)
+        {
+            acu = acu + peso;
+        }
+        return acu;
+    }
+
+    private List<float> normalizarPesos(List<float> pesos)
+    {
+        float sumaPesos = sumarPesos(pesos);
+        if (sumaPesos > 1)
+        {
+            for (int i = 0; i < int.Parse(criterios.Text); i++)
+            {
+                pesos[i] = pesos[i] / sumaPesos;
+            }
+        }
+        return pesos;
+    }
+
+    private bool verificarSuma(List<float> pesos)
+    {
+        float sumaPesos = sumarPesos(pesos);
+        if (sumaPesos < 1)
+        {
+            return false;
+        }
+        return true;
     }
 }

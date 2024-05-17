@@ -73,26 +73,33 @@ public partial class NewPage2 : ContentPage
         sv.Content = grid;
         Content = sv;
     }
-    private void OnNextClicked(object sender, EventArgs e)
+    private async void OnNextClicked(object sender, EventArgs e)
     {
-        
-        float[,] matriz = new float[filas, columnas];
-        int i = -1;
-        foreach (List<Entry> Lentry in entradas)
+        try
         {
-            i++;
+            float[,] matriz = new float[filas, columnas];
+            int i = -1;
+            foreach (List<Entry> Lentry in entradas)
+            {
+                i++;
+                for (int j = 0; j < columnas; j++)
+                {
+                    matriz[i, j] = float.Parse(Lentry[j].Text);
+                }
+            }
+            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
+            List<Entidades.Funcion> lista = new List<Entidades.Funcion>();
             for (int j = 0; j < columnas; j++)
             {
-                matriz[i, j] = float.Parse(Lentry[j].Text);
+                lista.Add(new Entidades.Funcion(q[j], p[j], o[j], int.Parse(funciones[j])));
             }
+            tp.resolver(lista);
+            Navigation.PushAsync(new Resultados(tp));
         }
-        Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
-        List<Entidades.Funcion> lista = new List<Entidades.Funcion>();
-        for (int j = 0;j < columnas; j++)
+        catch
         {
-            lista.Add(new Entidades.Funcion(q[j], p[j], o[j], int.Parse(funciones[j])));
+            await DisplayAlert("Error en la carga de datos", "Solo se pueden ingresar numeros en las tablas", "OK");
         }
-        tp.resolver(lista);
-        Navigation.PushAsync(new Resultados(tp));
+        
     }
 }
