@@ -1,4 +1,5 @@
 ﻿
+using CommunityToolkit.Maui.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,5 +199,130 @@ namespace AppTp.Metodos
             this.resultado = diferencias();
             
         }
+        public override async void guardarExcel()
+        {
+            string fileNameExport = "";
+
+            List<string> lista = new List<string>();
+            List<string[,]> matrices = new List<string[,]>();
+            List<string> textos = new List<string>();
+            int cont = 0;
+            foreach(float[,] tablaActual in tablasPrimeraParte)
+            {
+                lista.Add("tabla " + (cont).ToString() + " -Comparacion");
+                matrices.Add(formatoExcelP(tablaActual));
+                textos.Add("");
+                cont++;
+            }
+            cont = 0;
+            foreach (float[,] tablaActual in tablasSegundaParte)
+            {
+                lista.Add("tabla " + (cont).ToString() + " -Funcion");
+                matrices.Add(formatoExcelP(tablaActual));
+                textos.Add("");
+                cont++;
+            }
+            cont = 0;
+            foreach (float[,] tablaActual in matricesPonderadas)
+            {
+                lista.Add("tabla " + (cont).ToString() + " -MatricesPonderadas");
+                matrices.Add(formatoExcelP(tablaActual));
+                textos.Add("");
+                cont++;
+            }
+            lista.Add("Matrices sumadas");
+            matrices.Add(formatoExcelP(matrizPonderada));
+            textos.Add("");
+            lista.Add("Calculo flujos");
+            textos.Add("");
+            List<string> fila =new List<string>() { 
+            "flujo negativo"
+            };
+            List<string> colu = new List<string>() {
+            "flujo positivo"
+            };
+            cont = 0;
+            List<float[]> flujop = new List<float[]> {
+            flujoPositivo
+            };
+            List<float[]> flujon = new List<float[]> {
+            flujoNegativo
+            };
+
+
+            matrices.Add(Agregarfila(AgregarColumna(formatoExcelP(matrizPonderada),flujop, colu), flujon , fila));
+
+            Entidades.ExcelExporter e = new Entidades.ExcelExporter();
+
+            var folder = await FolderPicker.PickAsync(default);
+            while (folder == null)
+            {
+                folder = await FolderPicker.PickAsync(default);
+            }
+            
+            if (folder != null)
+            {
+                var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
+                e.ExportToExcel(lista, matrices, FilePath, textos);
+            }
+
+
+        }
+        public string[,] formatoExcelP(float[,] matriz)
+        {
+            int filasTotales = matriz.GetLength(0);
+            int columnasTotales = matriz.GetLength(1);
+
+            string[,] matrizString = new string[matriz.GetLength(0), matriz.GetLength(1)];
+            int filaAgregada = 0;
+            int coluAgregada = 0;
+            for (int i = 0; i < filasTotales; i++)
+            {
+                for (int j = 0; j < columnasTotales; j++)
+                {
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizString[i, j] = matriz[i, j].ToString();
+                    }
+
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+            filaAgregada = 0;
+            coluAgregada = 0;
+            string[,] matrizFormatoExcel = new string[filasTotales + 1, columnasTotales + 1];
+            for (int i = 0; i < filasTotales + 1; i++)
+            {
+                for (int j = 0; j < columnasTotales + 1; j++)
+                {
+                    //Agrego col de alter
+                    if (j == 0 && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i + 1, j] = "A" + (filaAgregada + 1).ToString();
+                    }
+                    else if (j > 0 && i > 0 && j <= matriz.GetLength(1) && i <= matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i - 1, j - 1].ToString();
+                    }
+                    //Agrego fila de criterios
+                    if (i == 0 && j < matrizString.GetLength(1))
+                    {
+                        matrizFormatoExcel[i, j + 1] = "A" + (coluAgregada + 1).ToString();
+                        coluAgregada++;
+                    }
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+
+            return matrizFormatoExcel;
+        }
+        
+
     }
 }
