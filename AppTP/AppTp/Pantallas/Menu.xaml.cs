@@ -6,7 +6,8 @@ using static AppTp.Entidades.Alternativa;
 
 public partial class Menu : ContentPage
 {
-    public Menu()
+    string metodo;
+    public Menu(string metodo)
     {
         InitializeComponent();
         c1.IsVisible = false;
@@ -16,6 +17,7 @@ public partial class Menu : ContentPage
         c5.IsVisible = false;
         c6.IsVisible = false;
         c7.IsVisible = false;
+        this.metodo = metodo;
     }
 
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
@@ -93,30 +95,30 @@ public partial class Menu : ContentPage
         }
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
         List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
-        if (metodo.SelectedItem.ToString() == "AHP")
+        if (metodo == "Método AHP")
         {
             List<AHP> tablasGlobal = new List<AHP>();
             Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.SelectedItem.ToString()), int.Parse(numeroalter.Text), 0, maxmin));
         }
         else if (DeviceInfo.Platform == DevicePlatform.WinUI)
         {
-            Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso, metodo.SelectedItem.ToString())); 
+            Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso, metodo)); 
         }
         else
         {
-            if (metodo.SelectedItem.ToString() == "Ponderaciòn Lineal")
+            if (metodo == "  Ponderación Lineal")
             {
                 Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
             }
-            else if (metodo.SelectedItem.ToString() == "MOORA")
+            else if (metodo == "Método MOORA")
             {
                 Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
             }
-            if (metodo.SelectedItem.ToString() == "MOORA con referencia")
+            if (metodo == "          MOORA Punto de Referencia")
             {
                 Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
             }
-            if (metodo.SelectedItem.ToString() == "TOPSIS")
+            if (metodo == "Método TOPSIS")
             {
                 Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.SelectedItem.ToString()), maxmin, peso));
             }

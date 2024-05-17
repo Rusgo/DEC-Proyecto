@@ -43,20 +43,21 @@ public partial class Ahp : ContentPage
         // Crear un Grid
         Grid grid = new Grid();
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.05, GridUnitType.Star) }); // Columna 1
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 2
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.075, GridUnitType.Star) }); // Columna 2
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 3
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.10, GridUnitType.Star) }); // Columna 4
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.65, GridUnitType.Star) }); // Columna 5
+        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.75, GridUnitType.Star) }); // Columna 5
         int aux = 1;
         int cont = 2;
         string c1 = "";
         string c2 = "";
-        grid.Add(new Label { Text = "", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 0, 0); // Columna 1
-        grid.Add(new Label { Text = "Cuál prefiere A o B?", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 1, 0); // Columna 2
-        grid.Add(new Label { Text = "", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 2, 0); // Columna 3
-        grid.Add(new Label { Text = "Igual", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 3, 0); // Columna 4
-        grid.Add(new Label { Text = "¿Cuánto más?", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 4, 0); // Columna 5
-                                                                                                                                               // Agregar elementos a cada fila
+        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.10, GridUnitType.Star) }); // Agregar una fila
+        grid.Add(new Label { Text = "", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 0, 0); // Columna 1
+        grid.Add(new Label { Text = "Cuál prefiere A o B?", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 1, 0); // Columna 2
+        grid.Add(new Label { Text = "", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 2, 0); // Columna 3
+        grid.Add(new Label { Text = "Igual", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 3, 0); // Columna 4
+        grid.Add(new Label { Text = "¿Cuánto más?", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 4, 0); // Columna 5
+                                                                                                                                                    // Agregar elementos a cada fila
         for (int i = 0; i < cantidadFilas; i++)
         {
             if (numeroDeTabla == 0)
@@ -81,8 +82,8 @@ public partial class Ahp : ContentPage
             {
                 if (cont <= alternativas)
                 {
-                    c1 = "Cr-" + aux;
-                    c2 = "Cr-" + cont;
+                    c1 = "A-" + aux;
+                    c2 = "A-" + cont;
                     cont = cont + 1;
 
                 }
@@ -90,30 +91,30 @@ public partial class Ahp : ContentPage
                 {
                     aux = aux + 1;
                     cont = aux + 1;
-                    c1 = "Cr-" + aux;
-                    c2 = "Cr-" + cont;
+                    c1 = "A-" + aux;
+                    c2 = "A-" + cont;
                     cont++;
                 }
             }
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Agregar una fila
-            fila = new List<RadioButton> { new RadioButton { Content = c1, GroupName = "fila" + (i + 1) }, new RadioButton { Content = c2, GroupName = "fila" + (i + 1) }, new RadioButton { Content = "1", GroupName = "comparaciones" + (i + 1) } };
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // Agregar una fila
+            fila = new List<RadioButton> { new RadioButton { Content = c1, GroupName = "fila" + (i + 1), TextColor = Color.FromHex("#000000") }, new RadioButton { Content = c2, GroupName = "fila" + (i + 1), TextColor = Color.FromHex("#000000") }, new RadioButton { Content = "1", GroupName = "comparaciones" + (i + 1), TextColor = Color.FromHex("#000000") } };
             // Elementos de la fila
 
 
-            grid.Add(new Label { Text = "1", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center }, 0, i + 1); // Columna 1
+            grid.Add(new Label { Text = (i+1).ToString(), VerticalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000"), HorizontalOptions = LayoutOptions.Center }, 0, i + 1); // Columna 1
             grid.Add(fila[0], 1, i + 1); // Columna 2
             grid.Add(fila[1], 2, i + 1); // Columna 3
             grid.Add(fila[2], 3, i + 1); // Columna 4
-            grid.Add(new Frame { Content = CreateFrameContent(i, fila), BackgroundColor = Colors.Transparent}, 4, i + 1); // Columna 5
+            grid.Add(new Frame { Content = CreateFrameContent(i, fila), BackgroundColor = Colors.Transparent, BorderColor = Colors.Transparent}, 4, i + 1); // Columna 5
         }
 
         // Agregar el Grid a tu página
         ScrollView sv = new ScrollView();
         sv.Orientation = ScrollOrientation.Vertical;
+        sv.BackgroundColor = Color.FromHex("#E3FEF7");
         sv.Content = grid;
         Content = sv;
-
 
 
     }
@@ -179,7 +180,7 @@ public partial class Ahp : ContentPage
         // Agregar RadioButton al HorizontalStackLayout
         for (int i = 2; i <= 9; i++)
         {
-            RadioButton rb = new RadioButton { Content = i.ToString(), GroupName = "comparaciones" + (numero + 1) };
+            RadioButton rb = new RadioButton { Content = i.ToString(), GroupName = "comparaciones" + (numero + 1), TextColor = Color.FromHex("#000000") };
             stackLayout.Children.Add(rb);
             fila.Add(rb);
         }

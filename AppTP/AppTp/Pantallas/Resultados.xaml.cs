@@ -1,5 +1,6 @@
 using AppTp.Metodos;
 using DevExpress.Maui.Core.Internal;
+
 namespace AppTp.Pantallas;
 
 public partial class Resultados : ContentPage
@@ -11,7 +12,7 @@ public partial class Resultados : ContentPage
         
 		InitializeComponent();
         this.obj = obj;
-        MostrarResultados(obj.resultado);
+        MostrarResultados(obj.ordenarResultado());
     }
 
     private string GenerateHexColor()
@@ -28,11 +29,11 @@ public partial class Resultados : ContentPage
         
 
     
-    private void MostrarResultados(float[] resultados)
+    private void MostrarResultados(string[] resultados)
     {
         // Usando LINQ para generar la salida formateada
         var resultadoFormateado = resultados
-            .Select((valor, indice) => $"r{indice + 1} = {valor}");
+            .Select((valor, indice) => $"Puesto{indice + 1} : {valor}");
         // Asignar los resultados al ListView
         listViewResultados.ItemsSource = resultadoFormateado;
     }

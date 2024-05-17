@@ -26,7 +26,7 @@ namespace AppTp.Metodos
             this.max = max;
             this.metodo = metodo;
         }
-        public void resolver()
+        public virtual void resolver()
         {
             int columnas = matriz.GetLength(1);
             int filas = matriz.GetLength(0);
@@ -318,7 +318,7 @@ namespace AppTp.Metodos
         {
             List<string> Lresul = new List<string>
             {
-                "U(X)"
+                "Resultado"
             };
             float[] res = new float[this.resultado.Count()];
             int cont = 0;
@@ -335,36 +335,7 @@ namespace AppTp.Metodos
 
             };
 
-            List<string> listaLetras = new List<string>
-            {
-                "Raiz de Cuadrados",
-                "Pesos"
-            };
-            if (this.metodo)
-            {
-                listaLetras = new List<string>
-            {
-                "Suma",
-                "Pesos"
-            };
-            }
-
-            float[] peso = new float[this.pesos.Count()];
-            cont = 0;
-            foreach (float f in resultado)
-            {
-                peso[cont] = f;
-                cont++;
-            }
-            List<float[]> matrizSumyPeso = new List<float[]>
-            {
-                this.sumaFinal,
-                peso
-
-            };
-
-
-            return Agregarfila(AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul), matrizSumyPeso, listaLetras);
+            return AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul);
         }
         public virtual async void guardarExcel()
         {
@@ -405,9 +376,9 @@ namespace AppTp.Metodos
             }
             List<string> textos = new List<string>
             {
-                "Aplicamos el metodo seleccionado calculando el valor para cada colu blabla",
-                "Normalizamos dividiendo a cada valor por su respectivo valor de columna bla blka",
-                "Ponderamos la matriz con los pesos",
+                "Aplicamos el metodo seleccionado calculando el valor para cada columna de la matriz",
+                "Aplicamos el metodo de normalizacion seleccionado",
+                "Ponderamos la matriz multiplicando cada valor de alternativa/criterio por su respectivo peso",
                 "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
             };
             if (folder != null)
@@ -417,6 +388,27 @@ namespace AppTp.Metodos
             }
 
 
+        }
+
+        public virtual string[] ordenarResultado()
+        {
+            int cantidad = this.resultado.Length;
+
+            string[] alternativas = new string[cantidad];
+            float[] resultados = this.resultado;
+            var indexedNumbers = resultados
+            .Select((value, index) => (value, index))
+            .ToArray();
+
+            Array.Sort(indexedNumbers, (x, y) => y.value.CompareTo(x.value));
+
+            int cont = 0;
+            foreach (var (value, index) in indexedNumbers)
+            {
+                alternativas[cont] = "A-" + (index+1).ToString() + " con un valor de " + value.ToString() ;
+                cont++;
+            }
+            return alternativas;
         }
     }
 }

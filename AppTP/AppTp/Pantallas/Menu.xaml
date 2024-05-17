@@ -7,19 +7,6 @@
         <ToolbarItem Text="Siguiente" Clicked="ToolbarItem_Clicked" />
     </ContentPage.ToolbarItems>
     <VerticalStackLayout>
-        <Picker x:Name="metodo" Title="Selecciona un Metodo">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                <x:String>Ponderaciòn Lineal</x:String>
-                    <x:String>MOORA</x:String>
-                    <x:String>MOORA con referencia</x:String>
-                        <x:String>TOPSIS</x:String>
-					<x:String>AHP</x:String>
-                </x:Array>
-                
-                
-            </Picker.ItemsSource>
-        </Picker>
         <Picker x:Name="normalizacion" Title="Selecciona un Metodo de Normalizacion">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">

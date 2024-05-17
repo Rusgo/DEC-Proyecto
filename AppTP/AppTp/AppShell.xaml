@@ -5,11 +5,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AppTp"
     Shell.FlyoutBehavior="Disabled"
-    Title="AppTp">
+    Title="AppTp"
+    BackgroundColor="#135D66">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:Pantallas.Menu}"
+        ContentTemplate="{DataTemplate local:Pantallas.Inicio}"
         Route="MainPage" />
 
 </Shell>

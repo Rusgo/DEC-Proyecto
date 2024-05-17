@@ -167,9 +167,9 @@ namespace AppTp.Metodos
             }
             List<string> textos = new List<string>
             {
-                "Aplicamos el metodo seleccionado calculando el valor para cada colu blabla",
-                "Normalizamos dividiendo a cada valor por su respectivo valor de columna bla blka",
-                "Ponderamos la matriz con los pesos",
+                "Aplicamos el metodo seleccionado calculando el valor para cada columna",
+                "Normalizamos aplicando el metodo de distancia euclidiana",
+                "Ponderamos la matriz multiplicando cada alternativa/criterio por su respectivo peso",
                 "Sacamos la mejor alternativa de acuerdo a cada criterio",
                 "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
             };

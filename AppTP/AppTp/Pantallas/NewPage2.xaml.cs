@@ -1,8 +1,6 @@
-using AppTp.Metodos;
-
 namespace AppTp.Pantallas;
 
-public partial class NewPage1 : ContentPage
+public partial class NewPage2 : ContentPage
 {
     private List<List<Entry>> entradas = new List<List<Entry>>();
     int filas;
@@ -10,15 +8,22 @@ public partial class NewPage1 : ContentPage
     string metodo;
     List<float> pesos;
     List<bool> maxmin;
-
-    public NewPage1(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo)
-    {
-        InitializeComponent();
+    List<string> funciones;
+    List<float> p;
+    List<float> q;
+    List<float> o;
+    public NewPage2(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo, List<string> funcs, List<float> p, List<float>q,List<float>o)
+	{
+		InitializeComponent();
         this.filas = rows;
         this.columnas = columns;
         this.metodo = metodo;
         this.maxmin = maxmin;
-        this.pesos = pesos; 
+        this.pesos = pesos;
+        this.funciones = funcs;
+        this.p = p;
+        this.q = q;
+        this.o = o;
         ToolbarItem nextToolbarItem = new ToolbarItem
         {
             Text = "Siguiente",
@@ -58,7 +63,7 @@ public partial class NewPage1 : ContentPage
                 }
             }
             if (i != 0) { entradas.Add(entryActual); }
-                
+
 
         }
         // Agregar el Grid a tu página
@@ -68,55 +73,25 @@ public partial class NewPage1 : ContentPage
         sv.Content = grid;
         Content = sv;
     }
-        private void OnNextClicked(object sender, EventArgs e)
-        {
+    private void OnNextClicked(object sender, EventArgs e)
+    {
         float[,] matriz = new float[filas, columnas];
         int i = -1;
-        foreach(List<Entry> Lentry in entradas)
+        foreach (List<Entry> Lentry in entradas)
         {
             i++;
-            for(int j = 0; j < columnas; j++)
+            for (int j = 0; j < columnas; j++)
             {
                 matriz[i, j] = float.Parse(Lentry[j].Text);
             }
         }
-        if (metodo == "  Ponderación Lineal")
+        Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
+        List<Entidades.Funcion> lista = new List<Entidades.Funcion>();
+        for (int j = 0;j < columnas; j++)
         {
-            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, true);
-            pl.resolver();
-            Navigation.PushAsync(new Resultados(pl));
+            lista.Add(new Entidades.Funcion(q[j], p[j], o[j], int.Parse(funciones[j])));
         }
-        else if (metodo == "Método MOORA")
-        {
-            Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, false);
-            moora.resolver();
-            Navigation.PushAsync(new Resultados(moora));
-        }
-        if (metodo == "          MOORA Punto de Referencia")
-        {
-            Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, false);
-            moora.resolver();
-            Navigation.PushAsync(new Resultados(moora));
-        }
-        if (metodo == "Método PROMETHEE")
-        {
-            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
-            Entidades.Funcion fun1 = new Entidades.Funcion(0,0,0,1);
-            Entidades.Funcion fun2 = new Entidades.Funcion(0,2,0,3);
-            Entidades.Funcion fun3 = new Entidades.Funcion(500,1000,0,5);
-            List<Entidades.Funcion> lista = new List<Entidades.Funcion>
-            {
-                fun1,fun2,fun3
-            };
-            tp.resolver(lista);
-            Navigation.PushAsync(new Resultados(tp));
-        }
-        if (metodo == "Método TOPSIS")
-        {
-            Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, false);
-            tp.resolver();
-            Navigation.PushAsync(new Resultados(tp));
-        }
+        tp.resolver(lista);
+        Navigation.PushAsync(new Resultados(tp));
     }
-    
 }
