@@ -79,55 +79,92 @@ public partial class pantallaMenu : ContentPage
         }
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
         List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
-        peso = normalizarPesos(peso);
-        bool validacionPesos = verificarSuma(peso);
-        if (validacionPesos)
+        
+        if (metodo == "Método AHP")
         {
-            if (metodo == "Método AHP")
-            {
-                List<AHP> tablasGlobal = new List<AHP>();
-                Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.Text), alternativas.Count, 0, maxmin));
-            }
-            else if (DeviceInfo.Platform == DevicePlatform.WinUI)
-            {
-                Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo));
-            }
-            else
-            {
-
-                if (metodo == "  Ponderación Lineal")
-                {
-                    Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.Text), maxmin, peso));
-                }
-                else if (metodo == "Método MOORA")
-                {
-                    Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.Text), maxmin, peso));
-                }
-                if (metodo == "          MOORA Punto de Referencia")
-                {
-                    Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.Text), maxmin, peso));
-                }
-                if (metodo == "Método TOPSIS")
-                {
-                    Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.Text), maxmin, peso));
-                }
-                if (metodo == "Método TOPSIS")
-                {
-                    Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.Text), maxmin, peso));
-                }
-                if (metodo == "Método AHP")
-                {
-                    List<AHP> tablasGlobal = new List<AHP>();
-                    Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.Text), int.Parse(Alternativas.Text), 0, maxmin));
-                }
-            }
+            List<AHP> tablasGlobal = new List<AHP>();
+            Navigation.PushAsync(new Ahp(tablasGlobal, int.Parse(criterios.Text), alternativas.Count, 0, maxmin));
+        }
+        else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+        {
+            Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo));
         }
         else
         {
-            await DisplayAlert("Error en el valor de los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
-        }
-        
 
+            if (metodo == "  Ponderación Lineal")
+            {
+                peso = normalizarPesos(peso);
+                bool validacionPesos = verificarSuma(peso);
+                if (verificarSuma(peso))
+                {
+                    Navigation.PushAsync(new PonderacionLineal(alternativas, int.Parse(criterios.Text), maxmin, peso));
+                }
+                else
+                {
+                    await DisplayAlert("Error al cargar los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+                }
+                
+            }
+            else if (metodo == "Método MOORA")
+            {
+                peso = normalizarPesos(peso);
+                bool validacionPesos = verificarSuma(peso);
+                if (verificarSuma(peso))
+                {
+                    Navigation.PushAsync(new Moora(alternativas, int.Parse(criterios.Text), maxmin, peso));
+                }
+                else
+                {
+                    await DisplayAlert("Error al cargar los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+                }
+                
+            }
+            if (metodo == "          MOORA Punto de Referencia")
+            {
+                peso = normalizarPesos(peso);
+                bool validacionPesos = verificarSuma(peso);
+                if (verificarSuma(peso))
+                {
+                    Navigation.PushAsync(new MooraPuntoRef(alternativas, int.Parse(criterios.Text), maxmin, peso));
+                }
+                else 
+                {
+                    await DisplayAlert("Error al cargar los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+                }
+
+                
+            }
+            if (metodo == "Método TOPSIS")
+            {
+                peso = normalizarPesos(peso);
+                bool validacionPesos = verificarSuma(peso);
+                if (verificarSuma(peso))
+                {
+                    Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.Text), maxmin, peso));
+                }
+                else
+                {
+                    await DisplayAlert("Error al cargar los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+                }
+                
+            }
+            if (metodo == "Método TOPSIS")
+            {
+                peso = normalizarPesos(peso);
+                bool validacionPesos = verificarSuma(peso);
+                if (verificarSuma(peso))
+                {
+                    Navigation.PushAsync(new Topsis(alternativas, int.Parse(criterios.Text), maxmin, peso));
+                }
+                else
+                {
+                    await DisplayAlert("Error al cargar los pesos", "La sumatoria de los pesos debe ser igual a 1 / suma: " + sumarPesos(peso), "OK");
+                }
+                
+            }
+            
+        }
     }
 
     private void criterios_TextChanged(object sender, TextChangedEventArgs e)
