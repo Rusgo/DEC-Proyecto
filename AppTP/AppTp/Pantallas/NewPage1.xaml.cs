@@ -68,63 +68,56 @@ public partial class NewPage1 : ContentPage
         sv.Content = grid;
         Content = sv;
     }
-        private async void OnNextClicked(object sender, EventArgs e)
+    private async void OnNextClicked(object sender, EventArgs e)
+    {
+       
+        float[,] matriz = new float[filas, columnas];
+        int i = -1;
+        foreach (List<Entry> Lentry in entradas)
         {
-        try
+            i++;
+            for (int j = 0; j < columnas; j++)
+            {
+                matriz[i, j] = float.Parse(Lentry[j].Text);
+            }
+        }
+        if (metodo == "  Ponderación Lineal")
         {
-            float[,] matriz = new float[filas, columnas];
-            int i = -1;
-            foreach (List<Entry> Lentry in entradas)
-            {
-                i++;
-                for (int j = 0; j < columnas; j++)
-                {
-                    matriz[i, j] = float.Parse(Lentry[j].Text);
-                }
-            }
-            if (metodo == "  Ponderación Lineal")
-            {
-                Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, true);
-                pl.resolver();
-                Navigation.PushAsync(new Resultados(pl));
-            }
-            else if (metodo == "Método MOORA")
-            {
-                Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, false);
-                moora.resolver();
-                Navigation.PushAsync(new Resultados(moora));
-            }
-            if (metodo == "          MOORA Punto de Referencia")
-            {
-                Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, false);
-                moora.resolver();
-                Navigation.PushAsync(new Resultados(moora));
-            }
-            if (metodo == "Método PROMETHEE")
-            {
-                Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
-                Entidades.Funcion fun1 = new Entidades.Funcion(0, 0, 0, 1);
-                Entidades.Funcion fun2 = new Entidades.Funcion(0, 2, 0, 3);
-                Entidades.Funcion fun3 = new Entidades.Funcion(500, 1000, 0, 5);
-                List<Entidades.Funcion> lista = new List<Entidades.Funcion>
+            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, true);
+            pl.resolver();
+            Navigation.PushAsync(new Resultados(pl));
+        }
+        else if (metodo == "Método MOORA")
+        {
+            Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, false);
+            moora.resolver();
+            Navigation.PushAsync(new Resultados(moora));
+        }
+        if (metodo == "          MOORA Punto de Referencia")
+        {
+            Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, false);
+            moora.resolver();
+            Navigation.PushAsync(new Resultados(moora));
+        }
+        if (metodo == "Método PROMETHEE")
+        {
+            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
+            Entidades.Funcion fun1 = new Entidades.Funcion(0, 0, 0, 1);
+            Entidades.Funcion fun2 = new Entidades.Funcion(0, 2, 0, 3);
+            Entidades.Funcion fun3 = new Entidades.Funcion(500, 1000, 0, 5);
+            List<Entidades.Funcion> lista = new List<Entidades.Funcion>
             {
                 fun1,fun2,fun3
             };
-                tp.resolver(lista);
-                Navigation.PushAsync(new Resultados(tp));
-            }
-            if (metodo == "Método TOPSIS")
-            {
-                Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, false);
-                tp.resolver();
-                Navigation.PushAsync(new Resultados(tp));
-            }
+            tp.resolver(lista);
+            Navigation.PushAsync(new Resultados(tp));
         }
-        catch
+        if (metodo == "Método TOPSIS")
         {
-            await DisplayAlert("Error en la carga de datos", "Solo se pueden ingresar nuemros en la tabla", "OK");
+            Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, false);
+            tp.resolver();
+            Navigation.PushAsync(new Resultados(tp));
         }
-        
+          
     }
-    
 }
