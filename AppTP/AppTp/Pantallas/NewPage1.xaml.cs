@@ -1,10 +1,12 @@
 using AppTp.Metodos;
-
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
+using AppTp.Pantallas.Pasos;
 namespace AppTp.Pantallas;
 
 public partial class NewPage1 : ContentPage
 {
-    private List<List<Entry>> entradas = new List<List<Entry>>();
+    private readonly Color backgroundColor = Color.FromHex("#77B0AA");
+    private readonly Color labelColor = Color.FromHex("#003C43");
     int filas;
     int columnas;
     string metodo;
@@ -19,85 +21,175 @@ public partial class NewPage1 : ContentPage
         this.metodo = metodo;
         this.maxmin = maxmin;
         this.pesos = pesos; 
-        ToolbarItem nextToolbarItem = new ToolbarItem
-        {
-            Text = "Siguiente",
-            Priority = 0, // Prioridad para la posición en la barra de herramientas
-            Order = ToolbarItemOrder.Primary, // Orden primario en la barra de herramientas
-        };
-        nextToolbarItem.Clicked += OnNextClicked;
+        CreateTable(rows, columns, metodo.Trim());
 
-        ToolbarItems.Add(nextToolbarItem);
-        Grid grid = new Grid();
-        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(0.15, GridUnitType.Star) }); // Columna 2
-        for (int j = 0; j < columns; j++)
-        {
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Columna i
-
-        }
-        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.15, GridUnitType.Star) }); // fila i
-        for (int i = 0; i <= rows; i++)
-        {
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // fila i
-            List<Entry> entryActual = new List<Entry>();
-            for (int j = 0; j <= columns; j++)
-            {
-                if (j != 0 && i == 0)
-                {
-                    grid.Add(new Label { Text = "C" + (j).ToString(), VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, j, 0);
-                }
-                else if (j == 0 && i != 0)
-                {
-                    grid.Add(new Label { Text = "A" + (i).ToString(), VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center, TextColor = Color.FromHex("#000000") }, 0, i);
-                }
-                else if (i != 0)
-                {
-                    Entry nueva = new Entry { VerticalOptions = LayoutOptions.Fill, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.FromHex("#135D66"), TextColor = Color.FromHex("#E3FEF7"), FontSize = Device.GetNamedSize(NamedSize.Default, typeof(Entry)) * (Application.Current.MainPage.Width / 20) };
-                    entryActual.Add(nueva);
-                    grid.Add(nueva, j, i);
-                }
-            }
-            if (i != 0) { entradas.Add(entryActual); }
-                
-
-        }
-        // Agregar el Grid a tu página
-        ScrollView sv = new ScrollView();
-        sv.Orientation = ScrollOrientation.Vertical;
-        sv.BackgroundColor = Color.FromHex("#E3FEF7");
-        sv.Content = grid;
-        Content = sv;
+        
     }
-    private async void OnNextClicked(object sender, EventArgs e)
+    public void CreateTable(int cantAlternativas, int cantCriterios, string metodo)
     {
-       
-        float[,] matriz = new float[filas, columnas];
-        int i = -1;
-        foreach (List<Entry> Lentry in entradas)
+        int filas = cantAlternativas + 1;
+        int columnas = cantCriterios + 1;
+        for (int fila = 0; fila < filas; fila++)
         {
-            i++;
-            for (int j = 0; j < columnas; j++)
+            GridCargaTabla.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+        }
+        for (int columna = 0; columna < columnas; columna++)
+        {
+            GridCargaTabla.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+
+        }
+        for (int fila = 0; fila < filas; fila++)
+        {
+            for (int columna = 0; columna < columnas; columna++)
             {
-                matriz[i, j] = float.Parse(Lentry[j].Text);
+                View cellView;
+                if (columna == 0 && fila == 0)
+                {
+                    cellView = new Frame
+                    {
+                        Content = new Label
+                        {
+                            Text = metodo,
+                            VerticalOptions = LayoutOptions.Center,
+                            HorizontalOptions = LayoutOptions.Center,
+                            FontAttributes = FontAttributes.Bold,
+                            Margin = 5,
+                            WidthRequest = 80,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            TextColor = labelColor,
+                            BackgroundColor = backgroundColor,
+                        },
+                        BorderColor = labelColor,
+                        Padding = new Thickness(2),
+                        CornerRadius = 0,
+                        BackgroundColor = backgroundColor,
+                    };
+                }
+                else if (columna == 0 && fila != 0)
+                {
+                    cellView = new Frame
+                    {
+                        Content = new Label
+                        {
+                            Text = $"A{fila}",
+                            VerticalOptions = LayoutOptions.Center,
+                            HorizontalOptions = LayoutOptions.Center,
+                            FontAttributes = FontAttributes.Bold,
+                            TextColor = labelColor,
+                            BackgroundColor = backgroundColor,
+                        },
+                        BorderColor = labelColor,
+                        CornerRadius = 0,
+                        Padding = new Thickness(2),
+                        BackgroundColor = backgroundColor,
+                    };
+                }
+                else if (fila == 0 && columna != 0)
+                {
+                    cellView = new Frame
+                    {
+                        Content = new Label
+                        {
+                            Text = $"C{columna}",
+                            VerticalOptions = LayoutOptions.Center,
+                            HorizontalOptions = LayoutOptions.Center,
+                            Margin = 2,
+                            FontAttributes = FontAttributes.Bold,
+                            TextColor = labelColor,
+                            BackgroundColor = backgroundColor,
+                        },
+                        BorderColor = labelColor,
+                        Padding = new Thickness(2),
+                        CornerRadius = 0,
+                        BackgroundColor = backgroundColor,
+                    };
+                }
+                else
+                {
+                    var entryEvaluacion = new Entry
+                    {
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Center,
+                        Keyboard = Keyboard.Numeric,
+                        Margin = 2,
+                        WidthRequest = 80,
+                        TextColor = Colors.Black,
+                        BackgroundColor = Colors.Transparent,
+                    };
+
+
+                    cellView = new Frame
+                    {
+                        Content = entryEvaluacion,
+                        BorderColor = labelColor,
+                        Padding = new Thickness(2),
+                        CornerRadius = 0,
+                        BackgroundColor = Colors.White
+                    };
+                }
+
+                GridCargaTabla.Add(cellView, columna, fila);
+
             }
+        }
+    }
+    private async void btnResolverClicked(object sender, EventArgs e)
+    {
+        int cantAlt = GridCargaTabla.RowDefinitions.Count - 1;
+        int cantCrit = GridCargaTabla.ColumnDefinitions.Count - 1;
+        float[,] matriz = new float[cantAlt, cantCrit];
+        bool isValid = true;
+
+        foreach (var child in GridCargaTabla.Children)
+        {
+            if (child is Frame frame && frame.Content is Entry entry)
+            {
+                if (!float.TryParse(entry.Text, out _))
+                {
+                    isValid = false;
+                }
+            }
+        }
+
+        if (!isValid)
+        {
+            DisplayAlert("Advertencia", "Por favor, ingrese solo valores numéricos.", "OK");
+        }
+        else
+        {
+            foreach (var child in GridCargaTabla.Children)
+            {
+                if (child is Frame frame && frame.Content is Entry entry)
+                {
+                    int row = GridCargaTabla.GetRow(frame);
+                    int col = GridCargaTabla.GetColumn(frame);
+                    if (row != 0 && col != 0)
+                    {
+                        matriz[row - 1, col - 1] = float.Parse(entry.Text);
+                    }
+
+                }
+            }
+
         }
         if (metodo == "  Ponderación Lineal")
         {
             Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, true);
             pl.resolver();
-            Navigation.PushAsync(new Resultados(pl));
+            Navigation.PushAsync(new TabPage(pl));
         }
         else if (metodo == "Método MOORA")
         {
             Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, false);
             moora.resolver();
-            Navigation.PushAsync(new Resultados(moora));
+            Navigation.PushAsync(new MooraTabPage(moora));
         }
         if (metodo == "          MOORA Punto de Referencia")
         {
             Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, false);
             moora.resolver();
-            Navigation.PushAsync(new Resultados(moora));
+            Navigation.PushAsync(new MooraPRTabPage(moora));
         }
         if (metodo == "Método PROMETHEE")
         {
@@ -116,7 +208,7 @@ public partial class NewPage1 : ContentPage
         {
             Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, false);
             tp.resolver();
-            Navigation.PushAsync(new Resultados(tp));
+            Navigation.PushAsync(new TOPSISTabPage(tp));
         }
           
     }

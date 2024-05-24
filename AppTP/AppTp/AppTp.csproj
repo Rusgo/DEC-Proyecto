@@ -38,7 +38,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-		<PackageCertificateThumbprint>0CE36FAF87DDD3AB8B849570C4AB7CA0922F6ACA</PackageCertificateThumbprint>
+		<PackageCertificateThumbprint>A509C03686E0569A9D23C96DF14E0D81BA417189</PackageCertificateThumbprint>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -52,7 +52,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" Color="#512BD4" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -69,7 +69,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\medalla10.png" />
+	  <None Remove="Resources\Images\medalla11.png" />
+	  <None Remove="Resources\Images\medalla12.png" />
+	  <None Remove="Resources\Images\medalla13.png" />
+	  <None Remove="Resources\Images\medalla14.png" />
+	  <None Remove="Resources\Images\medalla15.png" />
+	  <None Remove="Resources\Images\medalla4.png" />
+	  <None Remove="Resources\Images\medalla5.png" />
+	  <None Remove="Resources\Images\medalla6.png" />
+	  <None Remove="Resources\Images\medalla7.png" />
+	  <None Remove="Resources\Images\medalla8.png" />
+	  <None Remove="Resources\Images\medalla9.png" />
 	  <None Remove="Resources\Images\NewFile1.txt" />
+	  <None Remove="Resources\Images\podio.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -82,9 +95,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pantallas\Menu.xaml.cs">
-	    <DependentUpon>Menu.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Pantallas\pantallaMenuPromethee.xaml.cs">
 	    <DependentUpon>pantallaMenuPromethee.xaml</DependentUpon>
 	  </Compile>
@@ -94,19 +104,7 @@
 	  <MauiXaml Update="Pantallas\Ahp.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pantallas\AhpDecision.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\Inicio.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pantallas\Menu.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pantallas\Moora.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pantallas\MooraPuntoRef.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\NewPage1.xaml">
@@ -119,9 +117,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\pantallaMenu.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pantallas\PonderacionLineal.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\Resultados.xaml">

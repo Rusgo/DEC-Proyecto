@@ -74,33 +74,9 @@ namespace AppTp.Metodos
                 resultado[i] = max;
             }
 
-       
-
-
-
-
-
         }
         public virtual string[,] mejorAlternativaExcel()
         {
-            List<string> Lresul = new List<string>
-            {
-                "Distancia"
-            };
-            float[] res = new float[this.resultado.Count()];
-            int cont = 0;
-            foreach (float f in resultado)
-            {
-                res[cont] = f;
-                cont++;
-            }
-            cont = 0;
-
-            List<float[]> agrega = new List<float[]>
-            {
-                res
-
-            };
 
             List<string> listaLetras = new List<string>
             {
@@ -113,7 +89,7 @@ namespace AppTp.Metodos
             };
 
 
-            return Agregarfila(AgregarColumna(formatoExcel(this.matrizPonderada), agrega, Lresul), matrizSumyPeso, listaLetras);
+            return Agregarfila(formatoExcel(this.matrizPonderada), matrizSumyPeso, listaLetras);
         }
         public override string[,] agregacionExcel()
         {
@@ -180,6 +156,26 @@ namespace AppTp.Metodos
             }
 
 
+        }
+        public override string[] ordenarResultado()
+        {
+            int cantidad = this.resultado.Length;
+
+            string[] alternativas = new string[cantidad];
+            float[] resultados = this.resultado;
+            var indexedNumbers = resultados
+            .Select((value, index) => (value, index))
+            .ToArray();
+
+            Array.Sort(indexedNumbers, (x, y) => x.value.CompareTo(y.value));
+
+            int cont = 0;
+            foreach (var (value, index) in indexedNumbers)
+            {
+                alternativas[cont] = "A-" + (index + 1).ToString() + ": " + value.ToString();
+                cont++;
+            }
+            return alternativas;
         }
 
     }

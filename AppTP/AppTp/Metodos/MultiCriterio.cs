@@ -232,7 +232,7 @@ namespace AppTp.Metodos
             }
             float[] peso = new float[this.pesos.Count()];
             int cont = 0;
-            foreach (float f in resultado)
+            foreach (float f in pesos)
             {
                 peso[cont] = f;
                 cont++;
@@ -265,7 +265,7 @@ namespace AppTp.Metodos
             
             float[] peso = new float[this.pesos.Count()];
             int cont = 0;
-            foreach (float f in resultado)
+            foreach (float f in pesos)
             {
                 peso[cont] = f;
                 cont++;
@@ -298,7 +298,7 @@ namespace AppTp.Metodos
 
             float[] peso = new float[this.pesos.Count()];
             int cont = 0;
-            foreach (float f in resultado)
+            foreach (float f in pesos)
             {
                 peso[cont] = f;
                 cont++;
@@ -405,7 +405,7 @@ namespace AppTp.Metodos
             int cont = 0;
             foreach (var (value, index) in indexedNumbers)
             {
-                alternativas[cont] = "A-" + (index+1).ToString() + " con un valor de " + value.ToString() ;
+                alternativas[cont] = "A-" + (index+1).ToString() + ": " + value.ToString() ;
                 cont++;
             }
             return alternativas;
