@@ -1,12 +1,14 @@
-﻿namespace AppTp
+﻿using Microsoft.Maui.ApplicationModel;
+
+namespace AppTp
 {
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
-
-            MainPage = new AppShell();
+            Application.Current.UserAppTheme = AppTheme.Light;
+            MainPage = new NavigationPage(new Pantallas.Inicio());
         }
     }
 }

@@ -247,12 +247,12 @@ namespace AppTp.Metodos
             }
             List<string> textos = new List<string>
             {
-                "Aplicamos el metodo seleccionado calculando el valor para cada columna",
-                "Aplicamos el metodo de normalizacion seleccionado por el usuario",
-                "Ponderamos la matriz multiplicando el valor criterio/alternativa por su respectivo peso",
-                "Calculamos la solucion ideal para cada alternativa",
-                "Calculamos la solucion anti-ideal para cada alternativa",
-                "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
+                "Aplicamos el método de ponderación lineal calculando la suma de cuadrados de cada elemento de cada columna \n Este enfoque implica elevar al cuadrado cada valor en la matriz de decisión, correspondiente a las contribuciones de las alternativas respecto a cada criterio \n Luego, se suma el cuadrado de cada elemento en una columna específica, lo que proporciona una medida de la dispersión o variabilidad de los valores en esa columna.",
+                "En este paso, empleamos el método de normalización por distancia euclidiana \n La distancia euclidiana se obtiene como la raíz cuadrada de la suma de los cuadrados de cada columna \n Una vez calculadas estas distancias, se normalizan los valores de la matriz dividiendo cada elemento por su respectiva distancia euclidiana",
+                "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas \n Finalmente La solución ideal se obtiene seleccionando los valores máximos y mínimos de cada criterio entre todas las alternativas, estableciendo de esta manera un punto ideal que representa la combinación óptima de beneficios y pérdidas en todos los criterios.",
+                "A continuación, calculamos la distancia euclidiana de cada alternativa a estos valores ideales en cada criterio \n Esta medida revela la diferencia entre cada alternativa y la solución ideal, proporcionando así una evaluación detallada de su similitud con la mejor posible en cada aspecto considerado",
+                "Posteriormente, calculamos la distancia euclidiana de cada alternativa a estos valores anti-ideales en cada criterio \n Esta medida revela la diferencia entre cada alternativa y la solución anti-ideal, proporcionando así una evaluación detallada de su distancia con la peor alternativa posible en cada aspecto considerado",
+                "Luego, por cada alternativa  calculamos el índice de similaridad, el cual se obtiene dividiendo la distancia a la solución anti-ideal entre la suma de las distancias a la solución ideal y a la solución anti-ideal \n Este índice proporciona una medida relativa de qué tan similar es una alternativa a la solución anti-ideal en comparación con la solución ideal \n Finalmente ordenaremos las distancias obtenidas de mayor a menor"
             };
             if (folder != null)
             {

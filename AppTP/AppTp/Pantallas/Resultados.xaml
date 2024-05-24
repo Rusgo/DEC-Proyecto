@@ -6,13 +6,13 @@
              Title="Resultados">
 	
     <StackLayout Padding="20">
-        <Label Text="Resultados:" FontSize="Title" HorizontalOptions="Center" TextColor="Black"/>
+        <Label Text="Resultados:" FontSize="Title" HorizontalOptions="Center" TextColor="#135D66" FontFamily="Monserrat.ttf"/>
 
         <!-- ListView para mostrar los resultados -->
         <ListView x:Name="listViewResultados" VerticalOptions="FillAndExpand">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding}" TextColor="Black"/>
+                    <TextCell Text="{Binding}" TextColor="#135D66"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

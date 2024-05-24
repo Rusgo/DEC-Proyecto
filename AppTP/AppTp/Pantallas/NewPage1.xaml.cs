@@ -55,7 +55,7 @@ public partial class NewPage1 : ContentPage
                             HorizontalOptions = LayoutOptions.Center,
                             FontAttributes = FontAttributes.Bold,
                             Margin = 5,
-                            WidthRequest = 80,
+                            WidthRequest = 100,
                             HorizontalTextAlignment = TextAlignment.Center,
                             TextColor = labelColor,
                             BackgroundColor = backgroundColor,

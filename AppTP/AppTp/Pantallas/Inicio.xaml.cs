@@ -25,17 +25,7 @@ public partial class Inicio : ContentPage
         string buttonText = button.Text;
         if (buttonText == "Método PROMETHEE")
         {
-            /*
-            List<bool> maxmin = new List<bool>
-            {
-                true,true,false
-            };
-            List<float> peso = new List<float>
-            {
-                (float)0.5, (float)0.2, (float)0.3
-            };
-            Navigation.PushAsync(new NewPage1(5, 3, maxmin, peso, buttonText));
-            */
+           
             Navigation.PushAsync(new pantallaMenuPromethe(buttonText));
         }
         else

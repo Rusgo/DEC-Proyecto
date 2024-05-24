@@ -4,5 +4,67 @@
              x:Class="AppTp.Pantallas.Pasos.AHP_TabbedPage"
              x:DataType="TabbedPage"
             xmlns:local="clr-namespace:AppTp.Pantallas.Pasos">
-    
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem Text="Generar Excel" />
+    </TabbedPage.ToolbarItems>
+    <ContentPage Title="Paso 1" BackgroundColor="#E3FEF7">
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
+            <StackLayout>
+                <Label Margin="5,10,0,0" FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Paso 1: " FontAttributes="Bold"/>
+                            <Span Text="Paso todo al mismo sentido de optimización"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Grid x:Name="GridAHP_Matrices"
+          Padding="20"
+          RowSpacing="10"
+          ColumnSpacing="10">
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <ContentPage Title="Paso 2" BackgroundColor="#E3FEF7">
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
+            <StackLayout>
+                <Label Margin="5,10,0,0" FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Paso 2: " FontAttributes="Bold"/>
+                            <Span Text="Normalizo, pondero y obtengo la función de agregación"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Grid x:Name="GridNormalizado"
+                    Padding="20"
+                    RowSpacing="10"
+                    ColumnSpacing="10">
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+    <ContentPage Title="Paso 3" BackgroundColor="#E3FEF7">
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
+            <StackLayout>
+                <Label Margin="5,10,0,0" FontSize="16">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Paso 2: " FontAttributes="Bold"/>
+                            <Span Text="Normalizo, pondero y obtengo la función de agregación"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Grid x:Name="GridPL"
+            Padding="20"
+            RowSpacing="10"
+            ColumnSpacing="10">
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+    <local:Moora_Resultados x:Name="resultado" Title="Resultados"/>
 </TabbedPage>

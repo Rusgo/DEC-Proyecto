@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,11 @@ namespace AppTp.Metodos
         public float[] promedioFilas { get; set; }
 
         public float[] matrizAporW { get; set; }
+
+        public float ic {  get; set; }
+        public float rc { get; set; }
+
+        public float lambda { get; set; }
 
         public AHP(int cantidadElementos, List<List<RadioButton>> ev)
         {
@@ -123,14 +129,14 @@ namespace AppTp.Metodos
                 acumulador = acumulador + aw / promedioFilas[contador];
                 contador++;
             }
-            float lambda = acumulador / contador;
-            float ic = (lambda - contador) / (contador - 1);
+            this.lambda = acumulador / contador;
+            this.ic = (lambda - contador) / (contador - 1);
 
             double[] tabla = [0.52, 0.89, 1.11, 1.25, 1.35, 1.40, 1.45, 1.49];
 
             if (contador >= 3)
             {
-                float rc = ic / (float)tabla[contador - 3];
+                this.rc = ic / (float)tabla[contador - 3];
                 if (rc < 0.10)
                 {
                     return true;

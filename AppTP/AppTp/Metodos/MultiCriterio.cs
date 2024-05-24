@@ -348,6 +348,14 @@ namespace AppTp.Metodos
                 "Ponderar",
                 "Agregacion"
             };
+            List<string> textos = new List<string>
+            {
+                //Diferencia Euclidiana
+                "Aplicamos el método de ponderación lineal calculando la suma de cuadrados de cada elemento de cada columna \n Este enfoque implica elevar al cuadrado cada valor en la matriz de decisión, correspondiente a las contribuciones de las alternativas respecto a cada criterio \n Luego, se suma el cuadrado de cada elemento en una columna específica, lo que proporciona una medida de la dispersión o variabilidad de los valores en esa columna.",
+                "En este paso, empleamos el método de normalización por distancia euclidiana \n La distancia euclidiana se obtiene como la raíz cuadrada de la suma de los cuadrados de cada columna \n Una vez calculadas estas distancias, se normalizan los valores de la matriz dividiendo cada elemento por su respectiva distancia euclidiana",
+                "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
+                "En esta etapa aplicamos la función de agregación a la matriz ponderada \n La función de agregación es la encargada de combinar las contribuciones ponderadas de cada alternativa respecto a todos los criterios, generando así una medida global de preferencia para cada alternativa \n En nuestro caso utilizaremos la suma ponderada por lo que sumamos los valores ponderados de cada alternativa en todas las columnas de la matriz. "
+            };
             if (this.metodo)
             {
                 lista = new List<string>
@@ -356,6 +364,13 @@ namespace AppTp.Metodos
                 "Normalizar",
                 "Ponderar",
                 "Agregacion"
+            };
+                textos = new List<string>
+            {
+                "Aplicamos el método de ponderación lineal calculando la suma de cuadrados de cada elemento de cada columna \n Este enfoque implica elevar al cuadrado cada valor en la matriz de decisión, correspondiente a las contribuciones de las alternativas respecto a cada criterio \n Luego, se suma el cuadrado de cada elemento en una columna específica, lo que proporciona una medida de la dispersión o variabilidad de los valores en esa columna.",
+                "En este paso, nos enfocamos en normalizar la matriz de valores originales utilizando el método de normalización por la suma \n Para lograr esto, dividimos cada valor en la matriz por la suma de todos los valores en la misma columna.",
+                "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
+                "En esta etapa aplicamos la función de agregación a la matriz ponderada \\n La función de agregación es la encargada de combinar las contribuciones ponderadas de cada alternativa respecto a todos los criterios, generando así una medida global de preferencia para cada alternativa \\n En nuestro caso utilizaremos la suma ponderada por lo que sumamos los valores ponderados de cada alternativa en todas las columnas de la matriz"
             };
             }
             
@@ -374,13 +389,7 @@ namespace AppTp.Metodos
             {
                 folder = await FolderPicker.PickAsync(default);
             }
-            List<string> textos = new List<string>
-            {
-                "Aplicamos el metodo seleccionado calculando el valor para cada columna de la matriz",
-                "Aplicamos el metodo de normalizacion seleccionado",
-                "Ponderamos la matriz multiplicando cada valor de alternativa/criterio por su respectivo peso",
-                "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
-            };
+            
             if (folder != null)
             {
                 var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");

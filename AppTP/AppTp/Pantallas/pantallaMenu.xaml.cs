@@ -79,7 +79,7 @@ public partial class pantallaMenu : ContentPage
             alternativas.Add(new alternativa(i+1));
         }
         List<bool> maxmin = new List<bool> { maxc1.IsChecked, maxc2.IsChecked, maxc3.IsChecked, maxc4.IsChecked, maxc5.IsChecked, maxc6.IsChecked, maxc7.IsChecked };
-        List<float> peso = new List<float> { float.Parse(peso1.Text ?? "0"), float.Parse(peso2.Text ?? "0"), float.Parse(peso3.Text ?? "0"), float.Parse(peso4.Text ?? "0"), float.Parse(peso5.Text ?? "0"), float.Parse(peso6.Text ?? "0"), float.Parse(peso7.Text ?? "0") };
+        List<float> peso = new List<float> { float.Parse((peso1.Text ?? "0").Replace(',', '.')), float.Parse((peso2.Text ?? "0").Replace(',', '.')), float.Parse((peso3.Text ?? "0").Replace(',', '.')), float.Parse((peso4.Text ?? "0").Replace(',', '.')), float.Parse((peso5.Text ?? "0").Replace(',', '.')), float.Parse((peso6.Text ?? "0").Replace(',', '.')), float.Parse((peso7.Text ?? "0").Replace(',', '.')) };
         peso = normalizarPesos(peso);
         bool validacionPesos = verificarSuma(peso);
         if (validacionPesos || metodo == "Método AHP")

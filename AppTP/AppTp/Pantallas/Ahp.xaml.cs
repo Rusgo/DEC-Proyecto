@@ -1,4 +1,5 @@
 namespace AppTp.Pantallas;
+
 using Metodos;
 
 public partial class Ahp : ContentPage
@@ -167,7 +168,7 @@ public partial class Ahp : ContentPage
             List<float> a = new List<float>(tablasGlobal[0].promedioFilas);
             Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a , max, true);
             pl.resolver();
-            Navigation.PushAsync(new Resultados(pl));
+            Navigation.PushAsync(new Pantallas.Pasos.AHP_TabbedPage(tablasGlobal, pl));
         }
         
     }
@@ -195,9 +196,32 @@ public partial class Ahp : ContentPage
 
     }
 
-    
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+#if ANDROID
+        var activity = Platform.CurrentActivity;
+        activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
+#elif IOS
+            UIDevice.CurrentDevice.SetValueForKey(new NSNumber((int)UIInterfaceOrientation.LandscapeLeft), new NSString("orientation"));
+#endif
+    }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+#if ANDROID
+        var activity = Platform.CurrentActivity;
+        activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Unspecified;
+#elif IOS
+            UIDevice.CurrentDevice.SetValueForKey(new NSNumber((int)UIInterfaceOrientation.Unknown), new NSString("orientation"));
+#endif
+    }
 
+    private void ContentPage_Appearing(object sender, EventArgs e)
+    {
+
+    }
 }
 
 // Acordarnos de sacar el ultimo elemento en la lista al volver a la pagina anterior

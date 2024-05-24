@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppTp.Pantallas.Pasos.TabPage"
              x:DataType="TabbedPage"
-             Title="TabPage"
             xmlns:local="clr-namespace:AppTp.Pantallas.Pasos"
             BarTextColor="#E3FEF7"
             BackgroundColor="#135D66"
@@ -13,7 +12,7 @@
         <ToolbarItem Text="Generar Excel" Clicked="OnGenerateExcelClicked" />
     </TabbedPage.ToolbarItems>
     <ContentPage Title="Paso 1" BackgroundColor="#E3FEF7">
-        <ScrollView>
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
             <StackLayout>
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>
@@ -33,7 +32,7 @@
     </ContentPage>
 
     <ContentPage Title="Paso 2" BackgroundColor="#E3FEF7">
-        <ScrollView>
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
             <StackLayout>
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>

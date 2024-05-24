@@ -11,6 +11,7 @@ public partial class Moora_Resultados : ContentPage
     {
         InitializeComponent();
     }
+    Color labelColor = Color.FromHex("#003C43");
     public void mostrarResultados(string[] resultados)
     {
         List<string> alternativas = new List<string>();
@@ -32,9 +33,10 @@ public partial class Moora_Resultados : ContentPage
             var alternativaLabel = new Label
             {
                 Text = alternativas[i],
-                FontSize = 14,
-                TextColor = Colors.Black,
-                HorizontalOptions = LayoutOptions.Center
+                FontSize = 18,
+                TextColor = labelColor,
+                HorizontalOptions = LayoutOptions.Center,
+                FontFamily = "Monserrat.ttf"
             };
 
             var medallaImage = new Image

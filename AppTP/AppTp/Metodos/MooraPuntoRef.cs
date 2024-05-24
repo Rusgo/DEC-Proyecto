@@ -143,11 +143,11 @@ namespace AppTp.Metodos
             }
             List<string> textos = new List<string>
             {
-                "Aplicamos el metodo seleccionado calculando el valor para cada columna",
-                "Normalizamos aplicando el metodo de distancia euclidiana",
-                "Ponderamos la matriz multiplicando cada alternativa/criterio por su respectivo peso",
-                "Sacamos la mejor alternativa de acuerdo a cada criterio",
-                "Aplicamos la funcion de agregacion a cada una de las alternativas consideradas"
+                "Aplicamos el método de ponderación lineal calculando la suma de cuadrados de cada elemento de cada columna \n Este enfoque implica elevar al cuadrado cada valor en la matriz de decisión, correspondiente a las contribuciones de las alternativas respecto a cada criterio \n Luego, se suma el cuadrado de cada elemento en una columna específica, lo que proporciona una medida de la dispersión o variabilidad de los valores en esa columna.",
+                "En este paso, empleamos el método de normalización por distancia euclidiana \n La distancia euclidiana se obtiene como la raíz cuadrada de la suma de los cuadrados de cada columna \n Una vez calculadas estas distancias, se normalizan los valores de la matriz dividiendo cada elemento por su respectiva distancia euclidiana",
+                "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
+                "A continuacion lo que se hace es establecer el punto de referencia, representado por la mejor alternativa posible a cada uno de los criterios considerados",
+                "Calculamos la distancia Tchebycheff que representa la distancia que existe entre cada alternativa y el punto de referencia establecido para cada uno de los criterios \n Luego procedemos a seleccionar la mayor de estas distancias por alternativa \n por ultimo se debe ordenar de mayor a menor estos valores dandonos el orden de seleccion en base a los criterios y a la importancia de los mismos expresada por el decisor"
             };
             if (folder != null)
             {

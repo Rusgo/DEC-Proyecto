@@ -13,7 +13,7 @@
         <ToolbarItem Text="Generar Excel" Clicked="OnGenerateExcelClicked" />
     </TabbedPage.ToolbarItems>
     <ContentPage Title="Paso 1" BackgroundColor="#E3FEF7">
-        <ScrollView>
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
             <StackLayout>
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>
@@ -32,7 +32,7 @@
         </ScrollView>
     </ContentPage>
     <ContentPage Title="Paso 2" BackgroundColor="#E3FEF7">
-        <ScrollView>
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
             <StackLayout>
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>
@@ -51,7 +51,7 @@
         </ScrollView>
     </ContentPage>
     <ContentPage Title="Paso 3" BackgroundColor="#E3FEF7">
-        <ScrollView>
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
             <StackLayout>
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>

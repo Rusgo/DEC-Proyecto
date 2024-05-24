@@ -12,15 +12,15 @@
 
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <ScrollView>
+
+    <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
         <VerticalStackLayout Padding="20" HorizontalOptions="Center">
             <!-- Título -->
-            <Label Text="Resultados" 
-                   TextColor="Black"
-                   FontSize="Large" 
+            <Image Source="tituloresultados.png"
                    HorizontalOptions="Center"
-                   Margin="0,20,0,20"/>
+                   VerticalOptions="Start"
+                   Margin="2,2,2,2"
+                   WidthRequest="300"/>
 
 
             <!-- Contenedor para la imagen del podio y los nombres de las alternativas -->
@@ -35,26 +35,29 @@
                 <!-- Nombres de las alternativas en el podio -->
                 <Label x:Name="Alternativa1Label"
                        FontSize="Medium" 
-                       TextColor="Black"
+                       TextColor="#135D66"
                        HorizontalOptions="Center"
                        VerticalOptions="End"
-                       TranslationY="-170"/>
+                       TranslationY="-170"
+                       FontFamily="Monserrat.ttf"/>
 
                 <Label x:Name="Alternativa2Label"
                        FontSize="Medium" 
-                       TextColor="Black"
+                       TextColor="#135D66"
                        HorizontalOptions="Center"
                        VerticalOptions="End"
                        TranslationX="-200"
-                       TranslationY="-90"/>
+                       TranslationY="-90"
+                       FontFamily="Monserrat.ttf"/>
 
                 <Label x:Name="Alternativa3Label"
                        FontSize="Medium" 
-                       TextColor="Black"
+                       TextColor="#135D66"
                        HorizontalOptions="Center"
                        VerticalOptions="End"
                        TranslationX="200"
-                       TranslationY="-80"/>
+                       TranslationY="-80"
+                       FontFamily="Monserrat.ttf"/>
             </Grid>
 
             <!-- Contenedor para las medallas restantes -->
