@@ -10,7 +10,7 @@ namespace AppTp.Entidades
     {
         public static string[,] juntarMatrices(List<string[,]> matrices, int filasMax, int colMax)
         {
-            string[,] resultado = new string[(filasMax*matrices.Count), colMax];
+            string[,] resultado = new string[(filasMax*matrices.Count) + 1, colMax];
             int cont = 0;
             foreach (string[,] mat in matrices)
             {
@@ -54,6 +54,7 @@ namespace AppTp.Entidades
             }
             return matrizFormatoExcel;
         }
+
         //Agrega A1A2A3
         public static string[,] formatoExcel(float[,] matriz, bool alter, string criterio)
         {

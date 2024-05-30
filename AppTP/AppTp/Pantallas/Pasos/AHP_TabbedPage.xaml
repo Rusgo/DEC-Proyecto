@@ -9,7 +9,7 @@
     </TabbedPage.ToolbarItems>
     <ContentPage Title="Paso 1" BackgroundColor="#E3FEF7">
         <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
-            <StackLayout>
+            <StackLayout x:Name="PantallaPaso1">
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>
                         <FormattedString>
@@ -18,18 +18,13 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Grid x:Name="GridAHP_Matrices"
-          Padding="20"
-          RowSpacing="10"
-          ColumnSpacing="10">
-                </Grid>
             </StackLayout>
         </ScrollView>
     </ContentPage>
 
     <ContentPage Title="Paso 2" BackgroundColor="#E3FEF7">
         <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">
-            <StackLayout>
+            <StackLayout x:Name="PantallaPaso2">
                 <Label Margin="5,10,0,0" FontSize="16">
                     <Label.FormattedText>
                         <FormattedString>
