@@ -202,8 +202,6 @@ public partial class Ahp : ContentPage
 #if ANDROID
         var activity = Platform.CurrentActivity;
         activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Landscape;
-#elif IOS
-            UIDevice.CurrentDevice.SetValueForKey(new NSNumber((int)UIInterfaceOrientation.LandscapeLeft), new NSString("orientation"));
 #endif
     }
 
@@ -213,8 +211,6 @@ public partial class Ahp : ContentPage
 #if ANDROID
         var activity = Platform.CurrentActivity;
         activity.RequestedOrientation = Android.Content.PM.ScreenOrientation.Unspecified;
-#elif IOS
-            UIDevice.CurrentDevice.SetValueForKey(new NSNumber((int)UIInterfaceOrientation.Unknown), new NSString("orientation"));
 #endif
     }
 
