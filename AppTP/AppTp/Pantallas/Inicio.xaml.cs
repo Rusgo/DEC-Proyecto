@@ -32,6 +32,7 @@ public partial class Inicio : ContentPage
         {
             Navigation.PushAsync(new pantallaMenu(buttonText));
         }
+
         
     }
 }

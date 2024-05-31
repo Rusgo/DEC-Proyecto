@@ -4,7 +4,7 @@
              x:Class="AppTp.Pantallas.Inicio"
              Title="Inicio"
              BackgroundColor="{DynamicResource fondo}"
-             Shell.NavBarIsVisible="False">
+             NavigationPage.HasNavigationBar ="False">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key = "fondo">#E3FEF7</Color>

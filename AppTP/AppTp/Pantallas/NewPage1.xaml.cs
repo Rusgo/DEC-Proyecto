@@ -1,5 +1,4 @@
-using AppTp.Metodos;
-using DocumentFormat.OpenXml.Office2010.PowerPoint;
+
 using AppTp.Pantallas.Pasos;
 namespace AppTp.Pantallas;
 
@@ -210,6 +209,21 @@ public partial class NewPage1 : ContentPage
             tp.resolver();
             Navigation.PushAsync(new TOPSISTabPage(tp));
         }
-          
+        if (metodo == "    Método ELECTRE")
+        {
+            try
+            {
+                Metodos.Electre electre = new Metodos.Electre(matriz, pesos, maxmin, true);
+                electre.resolver();
+                Navigation.PushAsync(new ElectrePage(electre));
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
+        }
+
+
     }
 }

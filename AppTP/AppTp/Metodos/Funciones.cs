@@ -67,7 +67,6 @@ namespace AppTp.Metodos
             }
             return sumaFilas;
 
-
         }
 
         public static float[] multiplicarMatriz(float[,] matrizA, float[] pesos)

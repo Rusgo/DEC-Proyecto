@@ -98,6 +98,9 @@
 	  <Compile Update="Pantallas\pantallaMenuPromethee.xaml.cs">
 	    <DependentUpon>pantallaMenuPromethee.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pantallas\Pasos\ElectrePage.xaml.cs">
+	    <DependentUpon>ElectrePage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -117,6 +120,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\pantallaMenu.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pantallas\Pasos\ElectrePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pantallas\Resultados.xaml">
