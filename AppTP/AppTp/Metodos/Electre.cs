@@ -7,6 +7,7 @@ namespace AppTp.Metodos
     {
         public float[,] matrizConcordancia {  get; set; }
         public float[,] matrizDiscordancia { get; set; }
+        public float[,] matrizSuperacion { get; set; }
         public List<float[,]> listaDiscordancia { get; set; }
         public float[] maximos {  get; set; }
         public float[] min { get; set; }
@@ -14,6 +15,8 @@ namespace AppTp.Metodos
         public List<float[]> ListaMaximosDeFilas { get; set; }
         public List<float[]>  ListaMaximosDeFilasDivD { get; set; }
         public float maxDif {  get; set; }
+        public float ci { get; set; }
+        public float di { get; set; }
 
         public Electre(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
         {
@@ -34,6 +37,7 @@ namespace AppTp.Metodos
             indicesDiscordancia(filas, columnas);
             //hago la matriz
             hacerMatrizDiscordancia(filas, columnas);
+            //veo superadoras
         }
         public void hacerMatrizDiscordancia(int filas, int columnas)
         {
@@ -163,9 +167,13 @@ namespace AppTp.Metodos
         public float validar(int alternativaComparada, int fila, int col )
         {
             float res = 0;
-            if (matrizNormalizada[alternativaComparada, col] < matrizNormalizada[fila, col])
+            if (matrizNormalizada[alternativaComparada, col] < matrizNormalizada[fila, col] && max[col])
             {
-                res = matrizNormalizada[fila, col] - matrizNormalizada[alternativaComparada, col];
+                res = Math.Abs(matrizNormalizada[fila, col] - matrizNormalizada[alternativaComparada, col]);
+            }
+            else if (matrizNormalizada[alternativaComparada, col] > matrizNormalizada[fila, col] && !max[col])
+            {
+                res = Math.Abs(matrizNormalizada[alternativaComparada, col] - matrizNormalizada[fila, col]);
             }
             else
             {
@@ -193,7 +201,15 @@ namespace AppTp.Metodos
                         {
 
                             //cambiar en caso de min
-                            if (this.matrizNormalizada[alter, j] > this.matrizNormalizada[i, j])
+                            if (this.matrizNormalizada[alter, j] > this.matrizNormalizada[i, j] && max[j])
+                            {
+                                acu += this.pesos[j];
+                            }
+                            else if (this.matrizNormalizada[alter, j] < this.matrizNormalizada[i, j] && !max[j])
+                            {
+                                acu += this.pesos[j];
+                            }
+                            else if(this.matrizNormalizada[alter, j] == this.matrizNormalizada[i, j])
                             {
                                 acu += this.pesos[j];
                             }
@@ -202,6 +218,7 @@ namespace AppTp.Metodos
                     }
                 }
             }
+           /*
            for (int i = 0; i < alternativas; i++)
             {
                 for(int j = 0;j < alternativas; j++)
@@ -215,7 +232,7 @@ namespace AppTp.Metodos
                         matrizConcordancias[j, i] = 1 - matrizConcordancias[i, j];
                     }
                 }
-            }
+            }*/
            
 
             return matrizConcordancias;
@@ -223,7 +240,24 @@ namespace AppTp.Metodos
 
         public override void agregacion(int filas, int columnas)
         {
-            
+            this.matrizSuperacion = new float[filas, filas];
+            for(int i = 0; i < filas; i++) 
+            {
+                for(int j=0; j < filas; j++)
+                {
+                    if(i != j)
+                    {
+                        if (matrizConcordancia[i, j] > ci && matrizDiscordancia[i, j] < di)
+                        {
+                            matrizSuperacion[i, j] = 1;
+                        }
+                        else
+                        {
+                            matrizSuperacion[i,j] = 0;
+                        }
+                    }
+                }
+            }
         }
     }
 }

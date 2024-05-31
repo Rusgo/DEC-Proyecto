@@ -51,11 +51,16 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <Grid x:Name="GridPL"
+                
+                <Grid x:Name="GridSupe"
         Padding="20"
         RowSpacing="10"
         ColumnSpacing="10">
                 </Grid>
+
+                <Entry x:Name="c1" Placeholder="ci"/>
+                <Entry x:Name="d1" Placeholder="di"/>
+                <Button Clicked="Button_Clicked" Text="resolver"/>
             </StackLayout>
         </ScrollView>
     </ContentPage>

@@ -1,12 +1,15 @@
 using AppTp.Metodos;
+using System.Runtime.CompilerServices;
 
 namespace AppTp.Pantallas.Pasos;
 
 public partial class ElectrePage : TabbedPage
 {
+    Electre electre;
 	public ElectrePage(Electre electre)
 	{
 		InitializeComponent();
+        this.electre = electre;
         var grid = new Grid();
         grid.Margin = 10;
         Metodos.formatoTabla.CreateTable(electre.normalizarExcel(), "Paso 1", grid);
@@ -19,5 +22,13 @@ public partial class ElectrePage : TabbedPage
         PantallaPaso1.Children.Add(grid);
         PantallaPaso2.Children.Add(grid2);
         PantallaPaso2.Children.Add(grid3);
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        electre.agregacion(electre.matrizNormalizada.GetLength(0), electre.matrizNormalizada.GetLength(1));
+        electre.ci = float.Parse(c1.Text);
+        electre.di = float.Parse(d1.Text);
+        Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizSuperacion, true, ""), "Supera", GridSupe);
     }
 }
