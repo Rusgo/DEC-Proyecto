@@ -15,7 +15,7 @@ public partial class ElectrePage : TabbedPage
         Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizConcordancia, true, ""), "IndiceConcor", grid2);
         var grid3 = new Grid();
         grid3.Margin = 10;
-        Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizConcordancia, true, ""), "IndiceDiscor", grid3);
+        Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizDiscordancia, true, ""), "IndiceDiscor", grid3);
         PantallaPaso1.Children.Add(grid);
         PantallaPaso2.Children.Add(grid2);
         PantallaPaso2.Children.Add(grid3);

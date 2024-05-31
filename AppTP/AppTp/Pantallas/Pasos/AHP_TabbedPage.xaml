@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppTp.Pantallas.Pasos.AHP_TabbedPage"
              x:DataType="TabbedPage"
+            BarBackgroundColor="#135D66"
             xmlns:local="clr-namespace:AppTp.Pantallas.Pasos">
     <TabbedPage.ToolbarItems>
         <ToolbarItem Text="Generar Excel" />
