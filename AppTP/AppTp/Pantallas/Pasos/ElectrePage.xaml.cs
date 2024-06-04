@@ -26,9 +26,10 @@ public partial class ElectrePage : TabbedPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        electre.agregacion(electre.matrizNormalizada.GetLength(0), electre.matrizNormalizada.GetLength(1));
+
         electre.ci = float.Parse(c1.Text);
         electre.di = float.Parse(d1.Text);
+        electre.agregacion(electre.matrizNormalizada.GetLength(0), electre.matrizNormalizada.GetLength(1));
         Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizSuperacion, true, ""), "Supera", GridSupe);
     }
 }
