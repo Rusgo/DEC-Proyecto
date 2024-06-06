@@ -32,4 +32,9 @@ public partial class ElectrePage : TabbedPage
         electre.agregacion(electre.matrizNormalizada.GetLength(0), electre.matrizNormalizada.GetLength(1));
         Metodos.formatoTabla.CreateTable(Entidades.formatoAhp.formatoExcel(electre.matrizSuperacion, true, ""), "Supera", GridSupe);
     }
+
+    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    {
+        electre.guardarExcel();
+    }
 }

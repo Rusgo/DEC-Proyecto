@@ -1,6 +1,8 @@
 ﻿
 
 
+using CommunityToolkit.Maui.Storage;
+
 namespace AppTp.Metodos
 {
     public class Electre : MultiCriterio
@@ -258,6 +260,194 @@ namespace AppTp.Metodos
                     }
                 }
             }
+        }
+        public string[,] formatoExcelP(float[,] matriz)
+        {
+            int filasTotales = matriz.GetLength(0);
+            int columnasTotales = matriz.GetLength(1);
+
+            string[,] matrizString = new string[matriz.GetLength(0), matriz.GetLength(1)];
+            int filaAgregada = 0;
+            int coluAgregada = 0;
+            for (int i = 0; i < filasTotales; i++)
+            {
+                for (int j = 0; j < columnasTotales; j++)
+                {
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizString[i, j] = matriz[i, j].ToString();
+                    }
+
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+            filaAgregada = 0;
+            coluAgregada = 0;
+            string[,] matrizFormatoExcel = new string[filasTotales + 1, columnasTotales + 1];
+            for (int i = 0; i < filasTotales + 1; i++)
+            {
+                for (int j = 0; j < columnasTotales + 1; j++)
+                {
+                    //Agrego col de alter
+                    if (j == 0 && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i + 1, j] = "A" + (filaAgregada + 1).ToString();
+                    }
+                    else if (j > 0 && i > 0 && j <= matriz.GetLength(1) && i <= matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i - 1, j - 1].ToString();
+                    }
+                    //Agrego fila de criterios
+                    if (i == 0 && j < matrizString.GetLength(1))
+                    {
+                        matrizFormatoExcel[i, j + 1] = "A" + (coluAgregada + 1).ToString();
+                        coluAgregada++;
+                    }
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+
+            return matrizFormatoExcel;
+        }
+        public string[,] formatoExcelDiscordancia(float[,] matriz, int actual, int cantTablas)
+        {
+            int filasTotales = matriz.GetLength(0);
+            int columnasTotales = matriz.GetLength(1);
+
+            string[,] matrizString = new string[matriz.GetLength(0), matriz.GetLength(1) + 1];
+            int filaAgregada = 0;
+            int coluAgregada = 0;
+            for (int i = 0; i < filasTotales; i++)
+            {
+                for (int j = 0; j < columnasTotales; j++)
+                {
+                    if (j < matriz.GetLength(1) && i < matriz.GetLength(0))
+                    {
+                        matrizString[i, j + 1] = matriz[i, j].ToString();
+                    }
+
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+            filaAgregada = 0;
+            coluAgregada = 0;
+            string[,] matrizFormatoExcel = new string[filasTotales + 1, columnasTotales + 1];
+            for (int i = 0; i < filasTotales + 1; i++)
+            {
+                for (int j = 0; j < columnasTotales + 1; j++)
+                {
+                    //Agrego col de alter
+                    if (j == 0 && i < matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i + 1, j] = generarTextoFilas(actual + 1, cantTablas, i);
+                    }
+                    else if (j > 0 && i > 0 && j <= matriz.GetLength(1) && i <= matriz.GetLength(0))
+                    {
+                        matrizFormatoExcel[i, j] = matriz[i - 1, j - 1].ToString();
+                    }
+                    //Agrego fila de criterios
+                    if (i == 0 && j < matrizString.GetLength(1))
+                    {
+                        matrizFormatoExcel[i, j] = " ";
+                        coluAgregada++;
+                    }
+                }
+                if (i < matriz.GetLength(0))
+                {
+                    filaAgregada++;
+                }
+            }
+
+            return matrizFormatoExcel;
+        }
+        public string generarTextoFilas(int actual, int cant, int fila)
+        {
+            int cont = 0;
+            List<int> list = new List<int>();
+            for(int i = 0; i < cant; i++) { 
+                if (actual != (i + 1)) {
+                    list.Add(cont + 1);
+                } 
+                cont++;
+                
+            }
+            return "A" + actual.ToString() + " y " + "A" + list[fila].ToString();
+        }
+        public override async void guardarExcel()
+        {
+            string fileNameExport = "";
+
+            List<string> lista = new List<string>();
+            List<string[,]> matrices = new List<string[,]>();
+            List<string> textos = new List<string>();
+            matrices.Add(formatoExcel(this.matrizNormalizada));
+            lista.Add("matriz Normalizada");
+            textos.Add("");
+            matrices.Add((formatoExcelP(this.matrizConcordancia)));
+            lista.Add("Matriz Concordancia");
+            textos.Add("");
+            List<string> fila = new List<string>() {
+            "max",
+            "min",
+            "Dif"
+            };
+            List<float[]> filaF = new List<float[]>();
+            filaF.Add(maximos);
+            filaF.Add(min);
+            filaF.Add(diferencias);
+            matrices.Add(Agregarfila(formatoExcel(this.matrizNormalizada),filaF,fila));
+            lista.Add("Tabla Diferencias");
+            textos.Add("");
+            int cont = 0;
+            int discordanciaTablas = listaDiscordancia.Count;
+            List<string> col = new List<string>() {
+            "max",
+            "max * 1/d",
+            };
+            foreach (float[,] tablaActual in listaDiscordancia)
+            {
+                lista.Add("Tabla " + (cont).ToString() + "- Discordancia");
+                List<float[]> columna = new List<float[]>();
+                columna.Add(ListaMaximosDeFilas[cont]);
+                columna.Add(ListaMaximosDeFilasDivD[cont]);
+                matrices.Add(AgregarColumna(formatoExcelDiscordancia(tablaActual, cont, discordanciaTablas), columna,col));
+                textos.Add("");
+                cont++;
+            }
+            matrices.Add((formatoExcelP(this.matrizDiscordancia)));
+            textos.Add("");
+            lista.Add("Matriz Discordancia");
+            agregacion(matrizNormalizada.GetLength(0), matrizNormalizada.GetLength(1));
+            matrices.Add((formatoExcelP(this.matrizSuperacion)));
+            textos.Add("");
+            lista.Add("Matriz Superacion");
+
+
+
+            Entidades.ExcelExporter e = new Entidades.ExcelExporter();
+
+            var folder = await FolderPicker.PickAsync(default);
+            while (folder == null)
+            {
+                folder = await FolderPicker.PickAsync(default);
+            }
+
+            if (folder != null)
+            {
+                var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
+                e.ExportToExcel(lista, matrices, FilePath, textos);
+            }
+
+
         }
     }
 }
