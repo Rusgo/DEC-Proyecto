@@ -64,4 +64,17 @@
             </StackLayout>
         </ScrollView>
     </ContentPage>
+    <ContentPage Title="Grafico" BackgroundColor="#E3FEF7">
+        <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both" >
+            <AbsoluteLayout>
+                <GraphicsView
+                    x:Name="graphView"
+                    AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+                    AbsoluteLayout.LayoutFlags="All"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    />
+            </AbsoluteLayout>
+        </ScrollView>
+    </ContentPage>
 </TabbedPage>
