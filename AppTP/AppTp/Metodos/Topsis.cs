@@ -9,7 +9,7 @@ namespace AppTp.Metodos
 {
     public class Topsis:MultiCriterio
     {
-        public Topsis(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
+        public Topsis(float[,] matriz, List<float> pesos, List<bool> max, int metodo) : base(matriz, pesos, max, metodo)
         {
         }
 
@@ -127,7 +127,7 @@ namespace AppTp.Metodos
                 "Raiz de Cuadrados",
                 "Pesos"
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 listaLetras = new List<string>
             {
@@ -135,6 +135,14 @@ namespace AppTp.Metodos
                 "Pesos"
             };
             }
+            else if (this.metodo == 2) {
+                listaLetras = new List<string>
+            {
+                "Rango",
+                "Pesos"
+            };
+            }
+
 
             float[] peso = new float[this.pesos.Count()];
             cont = 0;
@@ -215,7 +223,7 @@ namespace AppTp.Metodos
                 "Calcular S-",
                 "Agregacion"
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 lista = new List<string>
             {
@@ -227,6 +235,18 @@ namespace AppTp.Metodos
                 "Agregacion"
             };
             }
+            else if (metodo == 2){
+                lista = new List<string>
+            {
+                "Rango",
+                "Normalizar",
+                "Ponderar",
+                "Calcular S+",
+                "Calcular S-",
+                "Agregacion"
+            };
+            }
+
 
             List<float[]> lista2 = new List<float[]>();
             List<string[,]> matrices = new List<string[,]>

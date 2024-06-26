@@ -1,5 +1,7 @@
 
 using AppTp.Pantallas.Pasos;
+using DevExpress.Maui.Core.Internal;
+using DocumentFormat.OpenXml.Math;
 namespace AppTp.Pantallas;
 
 public partial class NewPage1 : ContentPage
@@ -11,11 +13,13 @@ public partial class NewPage1 : ContentPage
     string metodo;
     List<float> pesos;
     List<bool> maxmin;
+    int selectedIndex;
 
-    public NewPage1(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo)
+    public NewPage1(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo, int selectedIndex)
     {
         InitializeComponent();
         this.filas = rows;
+        this.selectedIndex = selectedIndex;
         this.columnas = columns;
         this.metodo = metodo;
         this.maxmin = maxmin;
@@ -170,29 +174,43 @@ public partial class NewPage1 : ContentPage
 
                 }
             }
+            for (int i = 0; i < matriz.GetLength(0); i++) 
+            {
+                for (int j = 0; j < matriz.GetLength(1); j++)
+                {
+                    if (matriz[i, j] == 0)
+                    {
+                        for(int k = 0; k < matriz.GetLength(0); k++)
+                        {
+                            matriz[k, j] = matriz[k, j] + 1;
+                        }
+                    }
+                }
+            }
+
 
         }
         if (metodo == "  Ponderación Lineal")
         {
-            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, true);
+            Metodos.PonderacionLineal pl = new Metodos.PonderacionLineal(matriz, pesos, maxmin, selectedIndex);
             pl.resolver();
             Navigation.PushAsync(new TabPage(pl));
         }
         else if (metodo == "Método MOORA")
         {
-            Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, false);
+            Metodos.Moora moora = new Metodos.Moora(matriz, pesos, maxmin, 1);
             moora.resolver();
             Navigation.PushAsync(new MooraTabPage(moora));
         }
         if (metodo == "          MOORA Punto de Referencia")
         {
-            Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, false);
+            Metodos.MooraPuntoRef moora = new Metodos.MooraPuntoRef(matriz, pesos, maxmin, 1);
             moora.resolver();
             Navigation.PushAsync(new MooraPRTabPage(moora));
         }
         if (metodo == "Método PROMETHEE")
         {
-            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
+            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, selectedIndex);
             Entidades.Funcion fun1 = new Entidades.Funcion(0, 0, 0, 1);
             Entidades.Funcion fun2 = new Entidades.Funcion(0, 2, 0, 3);
             Entidades.Funcion fun3 = new Entidades.Funcion(500, 1000, 0, 5);
@@ -205,7 +223,7 @@ public partial class NewPage1 : ContentPage
         }
         if (metodo == "Método TOPSIS")
         {
-            Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, false);
+            Metodos.Topsis tp = new Metodos.Topsis(matriz, pesos, maxmin, selectedIndex);
             tp.resolver();
             Navigation.PushAsync(new TOPSISTabPage(tp));
         }
@@ -213,7 +231,7 @@ public partial class NewPage1 : ContentPage
         {
             try
             {
-                Metodos.Electre electre = new Metodos.Electre(matriz, pesos, maxmin, true);
+                Metodos.Electre electre = new Metodos.Electre(matriz, pesos, maxmin, selectedIndex);
                 electre.resolver();
                 Navigation.PushAsync(new ElectrePage(electre));
             }

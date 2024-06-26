@@ -20,7 +20,7 @@ namespace AppTp.Metodos
         public float ci { get; set; }
         public float di { get; set; }
 
-        public Electre(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
+        public Electre(float[,] matriz, List<float> pesos, List<bool> max, int metodo) : base(matriz, pesos, max, metodo)
         {
 
         }
@@ -94,20 +94,20 @@ namespace AppTp.Metodos
             diferencias = new float[columnas];
             for (int i = 0; i < columnas; i++)
             {
-                diferencias[i] = maximos[i] - min[i];
+                diferencias[i] = Math.Abs(maximos[i] - min[i]);
                 if (i == 0)
                 {
-                    maxDif = maximos[i] - min[i];
-                    diferencias[i] = (maximos[i] - min[i]);
+                    maxDif = Math.Abs(maximos[i] - min[i]);
+                    diferencias[i] = Math.Abs(maximos[i] - min[i]);
                 }
-                else if(maxDif < (maximos[i] - min[i]))
+                else if(maxDif < Math.Abs(maximos[i] - min[i]))
                 {
-                    maxDif = maximos[i] - min[i];
-                    diferencias[i] = (maximos[i] - min[i]);
+                    maxDif = Math.Abs(maximos[i] - min[i]);
+                    diferencias[i] = Math.Abs(maximos[i] - min[i]);
                 }
                 else
                 {
-                    diferencias[i] = (maximos[i] - min[i]);
+                    diferencias[i] = Math.Abs(maximos[i] - min[i]);
                 }
             }
             int contador = 0;

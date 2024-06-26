@@ -19,7 +19,7 @@
 
         <Frame BackgroundColor="{DynamicResource fondo}" BorderColor="Transparent">
             <StackLayout>
-                <Grid RowDefinitions="*,*" ColumnDefinitions="*,*,*,*">
+                <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
 
                     <Label Grid.Row="0" Grid.Column="0" Text="Cantidad de Alternativas:" FontFamily="Monserrat.ttf" TextColor="{DynamicResource labels}" VerticalOptions="Center"></Label>
                     <Entry x:Name="Alternativas" HorizontalTextAlignment="Center" IsEnabled="False" Grid.Column="2" Grid.Row="0" HorizontalOptions="FillAndExpand" TextColor="Black" BackgroundColor="White"></Entry>
@@ -29,7 +29,9 @@
                     <Entry x:Name="criterios" HorizontalTextAlignment="Center" TextChanged="criterios_TextChanged" IsEnabled="False" Grid.Column="2" Grid.Row="1" HorizontalOptions="FillAndExpand" TextColor="Black" Background="White" ></Entry>
                     <Button TextColor="White" Clicked="btnMenosCri" Text="-" x:Name="BtnDecremento2"  Grid.Column="1" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="{DynamicResource boton}"/>
                     <Button TextColor="White" Clicked="btnMasCri" Text="+" x:Name="BtnIncremento2"  Grid.Column="3" Grid.Row="1" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="{DynamicResource boton}"/>
-                
+                    <Picker x:Name="normalizarmetodos" Grid.Row="2" Grid.ColumnSpan="4" BackgroundColor="#135D66" TextColor="#E3FEF7" SelectedIndex="0">
+
+                    </Picker>
 
                 </Grid>
 

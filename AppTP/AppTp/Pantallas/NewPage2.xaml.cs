@@ -12,10 +12,12 @@ public partial class NewPage2 : ContentPage
     List<float> p;
     List<float> q;
     List<float> o;
-    public NewPage2(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo, List<string> funcs, List<float> p, List<float>q,List<float>o)
+    int selectedIndex;
+    public NewPage2(int rows, int columns, List<bool> maxmin, List<float> pesos, string metodo, List<string> funcs, List<float> p, List<float>q,List<float>o, int selectedIndex)
 	{
 		InitializeComponent();
         this.filas = rows;
+        this.selectedIndex = selectedIndex;
         this.columnas = columns;
         this.metodo = metodo;
         this.maxmin = maxmin;
@@ -87,7 +89,7 @@ public partial class NewPage2 : ContentPage
                     matriz[i, j] = float.Parse(Lentry[j].Text);
                 }
             }
-            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, false);
+            Metodos.PROMETHEE tp = new Metodos.PROMETHEE(matriz, pesos, maxmin, selectedIndex);
             List<Entidades.Funcion> lista = new List<Entidades.Funcion>();
             for (int j = 0; j < columnas; j++)
             {

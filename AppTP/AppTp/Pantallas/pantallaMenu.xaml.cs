@@ -20,6 +20,8 @@ public partial class pantallaMenu : ContentPage
         c7.IsVisible = false;
         Alternativas.Text = "2";
         criterios.Text = "2";
+        List<String> metodos = new List<String> { "suma","raiz","rango"};
+        normalizarmetodos.ItemsSource = metodos;
         if (metodo == "Método AHP")
         {
             c1.IsVisible = false; c2.IsVisible = false;
@@ -91,7 +93,7 @@ public partial class pantallaMenu : ContentPage
             }
             else
             {
-                Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo));
+                Navigation.PushAsync(new NewPage1(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo, normalizarmetodos.SelectedIndex));
             }
         }
         else

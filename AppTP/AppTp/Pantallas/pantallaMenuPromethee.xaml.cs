@@ -13,6 +13,7 @@ public partial class pantallaMenuPromethe : ContentPage
 	{
 		InitializeComponent();
         this.metodo = metodo;
+        List<String> metodos = new List<String> { "suma", "raiz", "rango" };
         c3.IsVisible = false;
         c4.IsVisible = false;
         c5.IsVisible = false;
@@ -118,7 +119,7 @@ public partial class pantallaMenuPromethe : ContentPage
 
             }
 
-            Navigation.PushAsync(new NewPage2(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo, funciones, p, q, o));
+            Navigation.PushAsync(new NewPage2(alternativas.Count, int.Parse(criterios.Text), maxmin, peso, metodo, funciones, p, q, o,normalizarmetodos.SelectedIndex));
         }
         else
         {

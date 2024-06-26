@@ -9,7 +9,7 @@ namespace AppTp.Metodos
 {
     public class MooraPuntoRef : MultiCriterio
     {
-        public MooraPuntoRef(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max,false)
+        public MooraPuntoRef(float[,] matriz, List<float> pesos, List<bool> max, int metodo) : base(matriz, pesos, max, 1)
         {
         }
 

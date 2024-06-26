@@ -17,7 +17,7 @@ namespace AppTp.Metodos
         public float[] flujoPositivo {  get; set; }
         public float[] flujoNegativo { get; set; }
 
-        public PROMETHEE(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
+        public PROMETHEE(float[,] matriz, List<float> pesos, List<bool> max, int metodo) : base(matriz, pesos, max, metodo)
         {
 
         }

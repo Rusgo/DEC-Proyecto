@@ -1,5 +1,6 @@
 ﻿using AppTp.Metodos;
 using CommunityToolkit.Maui.Storage;
+using DevExpress.XtraEditors;
 using DocumentFormat.OpenXml.Office2013.Drawing.Chart;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace AppTp.Metodos
         public float[] resultado { get; set; }
         public float[] sumaFinal { get; set; }
         //verdadero es suma
-        public bool metodo { get; set; }
+        public int metodo { get; set; }
         public List<bool> max { get; set; }
-        public MultiCriterio(float[,] matriz, List<float> pesos, List<bool> max, bool metodo)
+        public MultiCriterio(float[,] matriz, List<float> pesos, List<bool> max, int metodo)
         {
             this.matriz = matriz;
             this.pesos = pesos;
@@ -40,6 +41,27 @@ namespace AppTp.Metodos
             //Agregacion
             agregacion(filas, columnas);
         }
+        public float obtenerRango(int j)
+        {
+            int filas = matriz.GetLength (0);
+            // Inicializar los mínimos y máximos con el primer elemento de cada columna
+            float max = matriz[0, j];
+            float min = matriz[0, j];
+            
+            for (int i = 0; i < filas; i++) 
+                {
+                if(matriz[i, j] > max)
+                {
+                    max = matriz[i, j];
+                }
+                if (matriz[i, j] < min)
+                {
+                    min = matriz[i, j];
+                }
+                }
+
+            return max - min; 
+        }
         public virtual void normalizar(int filas, int columnas)
         {
             float[] sumaColumnas = new float[columnas];
@@ -51,12 +73,20 @@ namespace AppTp.Metodos
                 // Sumar los elementos de la columna actual
                 for (int i = 0; i < matriz.GetLength(0); i++)
                 {
-                    float res = verificar((this.metodo) ? matriz[i, j] : (float)Math.Pow(matriz[i, j], 2), max[j]);
+                    float res = verificar((this.metodo == 0) ? matriz[i, j] : ((float)Math.Pow(matriz[i, j], 2)), max[j]);
                     suma += res;
                 }
-
-                // Almacenar la suma en el array
-                sumaColumnas[j] = (this.metodo) ? suma : (float)Math.Sqrt(suma);
+                if(metodo == 2)
+                {
+                    float rango = obtenerRango(j);
+                    sumaColumnas[j] = rango;
+                }
+                else
+                {
+                    // Almacenar la suma en el array
+                    sumaColumnas[j] = (this.metodo == 0) ? suma : (float)Math.Sqrt(suma);
+                }
+                
             }
             this.sumaFinal = sumaColumnas;
 
@@ -222,11 +252,19 @@ namespace AppTp.Metodos
                 "Raiz de Cuadrados",
                 "Pesos"
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 listaLetras = new List<string>
             {
                 "Suma",
+                "Pesos"
+            };
+            }
+            else if (this.metodo == 2)
+            {
+                listaLetras = new List<string>
+            {
+                "Rango",
                 "Pesos"
             };
             }
@@ -254,7 +292,7 @@ namespace AppTp.Metodos
                 "Raiz de Cuadrados",
                 "Pesos"
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 listaLetras = new List<string>
             {
@@ -262,8 +300,16 @@ namespace AppTp.Metodos
                 "Pesos"
             };
             }
-            
-            float[] peso = new float[this.pesos.Count()];
+            else if (this.metodo == 2)
+            {
+                listaLetras = new List<string>
+            {
+                "Rango",
+                "Pesos"
+            };
+            }
+
+                float[] peso = new float[this.pesos.Count()];
             int cont = 0;
             foreach (float f in pesos)
             {
@@ -287,11 +333,19 @@ namespace AppTp.Metodos
                 "Raiz de Cuadrados",
                 "Pesos"
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 listaLetras = new List<string>
                 {
                     "Suma",
+                    "Pesos"
+                };
+            }
+            else if (this.metodo == 2)
+            {
+                listaLetras = new List<string>
+                {
+                    "Rango",
                     "Pesos"
                 };
             }
@@ -356,7 +410,7 @@ namespace AppTp.Metodos
                 "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
                 "En esta etapa aplicamos la función de agregación a la matriz ponderada \n La función de agregación es la encargada de combinar las contribuciones ponderadas de cada alternativa respecto a todos los criterios, generando así una medida global de preferencia para cada alternativa \n En nuestro caso utilizaremos la suma ponderada por lo que sumamos los valores ponderados de cada alternativa en todas las columnas de la matriz. "
             };
-            if (this.metodo)
+            if (this.metodo == 0)
             {
                 lista = new List<string>
             {
@@ -369,6 +423,23 @@ namespace AppTp.Metodos
             {
                 "Aplicamos el método de ponderación lineal calculando la suma de cuadrados de cada elemento de cada columna \n Este enfoque implica elevar al cuadrado cada valor en la matriz de decisión, correspondiente a las contribuciones de las alternativas respecto a cada criterio \n Luego, se suma el cuadrado de cada elemento en una columna específica, lo que proporciona una medida de la dispersión o variabilidad de los valores en esa columna.",
                 "En este paso, nos enfocamos en normalizar la matriz de valores originales utilizando el método de normalización por la suma \n Para lograr esto, dividimos cada valor en la matriz por la suma de todos los valores en la misma columna.",
+                "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
+                "En esta etapa aplicamos la función de agregación a la matriz ponderada \\n La función de agregación es la encargada de combinar las contribuciones ponderadas de cada alternativa respecto a todos los criterios, generando así una medida global de preferencia para cada alternativa \\n En nuestro caso utilizaremos la suma ponderada por lo que sumamos los valores ponderados de cada alternativa en todas las columnas de la matriz"
+            };
+            }
+            else if (this.metodo == 2)
+            {
+                lista = new List<string>
+            {
+                "Rango",
+                "Normalizar",
+                "Ponderar",
+                "Agregacion"
+            };
+                textos = new List<string>
+            {
+                "Aplicamos el método de ponderación lineal calculando el Rango entre el maximo y minimo de cada criterio para luego dividir por eso a cada uno de los valores para normalizar la tabla",
+                "En este paso, nos enfocamos en normalizar la matriz de valores originales utilizando el método de normalización por el rango \n Para lograr esto, dividimos cada valor en la matriz por el rango de los valores en la misma columna.",
                 "En esta fase, procedemos a ponderar la matriz normalizada \n Para llevar a cabo esta tarea, multiplicamos cada valor de la matriz normalizada por su correspondiente peso asignado a cada criterio \n La multiplicación de los valores normalizados por los pesos asegura que los criterios más importantes tengan un mayor impacto en la evaluación final de las alternativas",
                 "En esta etapa aplicamos la función de agregación a la matriz ponderada \\n La función de agregación es la encargada de combinar las contribuciones ponderadas de cada alternativa respecto a todos los criterios, generando así una medida global de preferencia para cada alternativa \\n En nuestro caso utilizaremos la suma ponderada por lo que sumamos los valores ponderados de cada alternativa en todas las columnas de la matriz"
             };

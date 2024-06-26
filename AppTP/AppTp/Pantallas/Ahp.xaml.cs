@@ -166,7 +166,7 @@ public partial class Ahp : ContentPage
 
             }
             List<float> a = new List<float>(tablasGlobal[0].promedioFilas);
-            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a , max, true);
+            Metodos.MultiCriterio pl = new Metodos.MultiCriterio(matriz,a , max, 0);
             pl.resolver();
             Navigation.PushAsync(new Pantallas.Pasos.AHP_TabbedPage(tablasGlobal, pl));
         }

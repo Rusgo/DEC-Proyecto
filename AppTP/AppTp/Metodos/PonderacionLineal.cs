@@ -8,7 +8,7 @@ namespace AppTp.Metodos
 {
     public class PonderacionLineal : MultiCriterio
     {
-        public PonderacionLineal(float[,] matriz, List<float> pesos, List<bool> max, bool metodo) : base(matriz, pesos, max, metodo)
+        public PonderacionLineal(float[,] matriz, List<float> pesos, List<bool> max, int metodo) : base(matriz, pesos, max, metodo)
         {
         }
         public override void normalizar(int filas, int columnas)
@@ -22,13 +22,20 @@ namespace AppTp.Metodos
                 // Sumar los elementos de la columna actual
                 for (int i = 0; i < matriz.GetLength(0); i++)
                 {
-                    float res = verificar((this.metodo) ? matriz[i, j] : (float)Math.Pow(matriz[i, j], 2), max[j]);
+                    float res = verificar((this.metodo == 0) ? matriz[i, j] : (float)Math.Pow(matriz[i, j], 2), max[j]);
                     suma += res;
-                    matriz[i, j] = res;
+                }
+                if (metodo == 2)
+                {
+                    float rango = obtenerRango(j);
+                    sumaColumnas[j] = rango;
+                }
+                else
+                {
+                    // Almacenar la suma en el array
+                    sumaColumnas[j] = (this.metodo == 0) ? suma : (float)Math.Sqrt(suma);
                 }
 
-                // Almacenar la suma en el array
-                sumaColumnas[j] = (this.metodo) ? suma : (float)Math.Sqrt(suma);
             }
             this.sumaFinal = sumaColumnas;
             //normalizar
