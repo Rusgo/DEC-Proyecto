@@ -15,6 +15,17 @@ public partial class MooraTabPage : TabbedPage
     }
     private async void OnGenerateExcelClicked(object sender, EventArgs e)
     {
-        obj.guardarExcel();
+        string nombreArchivo = await DisplayPromptAsync("Nombre del archivo", "Ingrese el nombre del archivo donde desea guardar la resolucion del problema");
+
+        if (nombreArchivo != null || nombreArchivo != "")
+        {
+            obj.guardarExcel(nombreArchivo);
+        }
+        else 
+        {
+            await DisplayAlert("Error", "No se ingreso un nombre de archivo valido","OK");
+        }
+
+        
     }
 }

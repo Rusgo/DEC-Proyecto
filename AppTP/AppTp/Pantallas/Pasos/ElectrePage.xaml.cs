@@ -101,8 +101,19 @@ public partial class ElectrePage : TabbedPage
         graphView.Invalidate();
     }
 
-    private void ToolbarItem_Clicked(object sender, EventArgs e)
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
     {
-        electre.guardarExcel();
+        string nombreArchivo = await DisplayPromptAsync("Nombre del archivo", "Ingrese el nombre del archivo donde desea guardar la resolucion del problema");
+
+        if(nombreArchivo != null || nombreArchivo != "")
+        {
+            electre.guardarExcel(nombreArchivo);
+        }
+        else
+        {
+            await DisplayAlert("Error", "No se ingreso un nombre de archivo valido", "OK");
+        }
+
+        
     }
 }
