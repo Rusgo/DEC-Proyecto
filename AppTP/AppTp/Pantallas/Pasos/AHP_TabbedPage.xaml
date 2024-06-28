@@ -6,7 +6,7 @@
             BarBackgroundColor="#135D66"
             xmlns:local="clr-namespace:AppTp.Pantallas.Pasos">
     <TabbedPage.ToolbarItems>
-        <ToolbarItem Text="Generar Excel" />
+        <ToolbarItem Text="Generar Excel" Clicked="ToolbarItem_Clicked" />
     </TabbedPage.ToolbarItems>
     <ContentPage Title="Paso 1" BackgroundColor="#E3FEF7">
         <ScrollView HorizontalScrollBarVisibility="Always" Orientation="Both">

@@ -5,9 +5,11 @@ namespace AppTp.Pantallas.Pasos;
 
 public partial class AHP_TabbedPage : TabbedPage
 {
+    AHP ahp;
 	public AHP_TabbedPage(List<AHP> ahp, MultiCriterio pl)
 	{
 		InitializeComponent();
+        
 		List<string[,]> matricesComparacion = new List<string[,]>();
         List<string[,]> matricesNormalizadas = new List<string[,]>();
         int cont = 0;
@@ -73,5 +75,15 @@ public partial class AHP_TabbedPage : TabbedPage
         Metodos.formatoTabla.CreateTable(pl.agregacionExcel(), "Paso 3", GridPL);
         resultado.mostrarResultados(pl.ordenarResultado());
 
+    }
+
+    private async void ToolbarItem_Clicked(object sender, EventArgs e)
+    {
+        string nombreArchivo = await DisplayPromptAsync("Nombre del archivo", "Ingrese el nombre del archivo donde desea guardar la resolucion del problema");
+
+        if(nombreArchivo != "" || nombreArchivo != null)
+        {
+            
+        }
     }
 }

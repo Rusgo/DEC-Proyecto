@@ -113,9 +113,9 @@ namespace AppTp.Metodos
             };
             return AgregarColumna(formatoExcel(this.MatrizPR), agrega, Lresul);
         }
-        public override async void guardarExcel()
+        public override async void guardarExcel(string NombreArchivo)
         {
-            string fileNameExport = "";
+            string fileNameExport = NombreArchivo + ".xlsx";
 
             List<string> lista = new List<string>
             {
@@ -151,7 +151,7 @@ namespace AppTp.Metodos
             };
             if (folder != null)
             {
-                var FilePath = Path.Combine(folder.Folder.Path, "archivo.xlsx");
+                var FilePath = Path.Combine(folder.Folder.Path, fileNameExport);
                 e.ExportToExcel(lista, matrices, FilePath, textos);
             }
 
